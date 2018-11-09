@@ -16,6 +16,8 @@ const passport = require('passport');
 const MongoStore = require('connect-mongo')(expressSession);
 
 
+
+
 mongoose.connect(config.database, { useNewUrlParser: true });
 mongoose.connection
     .once('open',() => { console.log('working'); })
@@ -60,7 +62,6 @@ app.use(expressValidator({
     }
 }));
 app.use(logger('dev'));
-app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -75,6 +76,7 @@ require('./config/passport')(passport);
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
