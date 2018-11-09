@@ -3,10 +3,10 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
-let flash = require('connect-flash');
 let ejs = require('ejs');
 let expressValidator = require('express-validator');
 let expressSession = require('express-session');
+let flash = require('connect-flash');
 const bodyParser = require('body-parser');
 let indexRouter = require('./routes/index');
 let userRouter = require('./routes/users');
@@ -31,11 +31,18 @@ app.set('view engine', 'ejs');
 app.locals.rmWhitespace = true;
 
 // Express Messages Middleware
-// app.use(require('connect-flash')());
-// app.use(function (req, res, next) {
-//     res.locals.messages = require('express-messages')(req, res);
-//     next();
-// });
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+    res.locals.messages = require('express-messages')(req, res);
+    next();
+});
+app.use(expressSession({secret:'max', saveUninitialized: true, resave: true,
+    store: new MongoStore({
+        url: config.database,
+        collection: 'sessions'
+    })
+}));
+
 // Express Validator Middleware
 app.use(expressValidator({
     errorFormatter: function (param, msg, value) {
@@ -69,13 +76,7 @@ require('./config/passport')(passport);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(flash());
-app.use(expressSession({secret:'max', saveUninitialized: true, resave: true,
-    store: new MongoStore({
-        url: config.database,
-        collection: 'sessions'
-    })
-}));
+
 
 // Init passport authentication
 app.use(passport.initialize());
@@ -97,14 +98,14 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/admin', userRouter);
 
-// app.use((req, res, next)=> {
-//
-//     let token = req.csrfToken();
-//     res.cookie('XSRF-TOKEN', token);
-//     res.locals.csrfToken = token;
-//
-//     next();
-// });
+app.use((req, res, next)=> {
+
+    let token = req.csrfToken();
+    res.cookie('XSRF-TOKEN', token);
+    res.locals.csrfToken = token;
+
+    next();
+});
 /*------<Catch 404 And Forward To Error Handler>-----*/
 app.use(function(req, res, next) {
     next(createError(404));

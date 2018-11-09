@@ -10,10 +10,10 @@ let mailgun = require('mailgun-js')({apiKey: mailgun_api_key, domain: domain_nam
 const clientEmailAddress = 'hassaan@appstersinc.com';
 let async = require("async");
 let crypto = require('crypto-browserify');
-const resetPasswordRoute = '/admin/reset-password/';
-const forgotPasswordRouteAddress = '/admin/forgot-password';
-const loginRouteAddress = '/admin/login';
-const profileRouteAddress = '/admin/profile';
+const resetPasswordRoute = '/reset-password/';
+const forgotPasswordRouteAddress = '/forgot-password';
+const loginRouteAddress = '/login';
+const profileRouteAddress = '/profile';
 
 function isLoggedIn(req, res, next) {
 
@@ -34,14 +34,14 @@ function isLoggedOut(req, res, next) {
     res.redirect('back');
 }
 // Login Form
-router.get('/login',  (req,res,next) => {
+router.get('/login', isLoggedOut,  (req,res,next) => {
     res.render('login', {
-        title:'Admin login form'
+        title:'Admin login form',
+        token: app.token
     });
 });
 // Login Process
-router.post('/login',  (req,res,next) => {
-    req.flash('worked','this has some messages');
+router.post('/login', isLoggedOut, (req,res,next) => {
     console.log('is empty '+req.user);
     passport.authenticate('local', {
         successRedirect: profileRouteAddress,
@@ -49,19 +49,21 @@ router.post('/login',  (req,res,next) => {
         failureFlash: true
     })(req, res, next);
 });
-router.get('/register', (req, res) => {
+router.get('/register', isLoggedOut, (req, res) => {
     res.render('register', {
         title:'Admin registration form',
         token: app.token
     });
 });
-router.post('/register',  (req,res,next) => {
+router.post('/register', isLoggedOut, (req,res,next) => {
     const body = req.body;
-    const name = body.name;
+    const firstName = body.firstName;
+    const lastName = body.lastName;
     const email = body.email;
     const password = body.password;
 
-    req.checkBody('name', 'Name is required').notEmpty();
+    req.checkBody('firstName', 'First Name is required').notEmpty();
+    req.checkBody('lastName', 'Last Name is required').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('email', 'Email is not valid').isEmail();
     req.checkBody('password', 'Password is required').notEmpty();
@@ -76,7 +78,8 @@ router.post('/register',  (req,res,next) => {
     }
     else {
         let newUser = new User({
-            name: name,
+            firstName: firstName,
+            lastName: lastName,
             email: email,
             password: password,
         });
@@ -119,12 +122,13 @@ router.get('/logout',isLoggedIn, (req,res,next) => {
     res.redirect(loginRouteAddress);
 });
 
-router.get('/forgot-password',  (req,res,next) => {
+router.get('/forgot-password', isLoggedOut, (req,res,next) => {
     res.render('forgot-password',{
-        title:'Reset password'
+        title:'Reset password',
+        token: app.token
     });
 });
-router.post('/forgot-password',  (req,res,next) => {
+router.post('/forgot-password', isLoggedOut, (req,res,next) => {
     async.waterfall([
         function(done) {
             crypto.randomBytes(20, function(err, buf) {
@@ -200,11 +204,9 @@ router.post('/forgot-password',  (req,res,next) => {
     });
 });
 
-router.get('/reset-password/:token',  (req,res,next) => {
+router.get('/reset-password/:token', isLoggedOut, (req,res,next) => {
     User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
-            req.flash('error', 'Password reset token is invalid or has expired.');
-            req.session.emailSuccess = 'Password reset token is invalid or has expired.';
             return res.redirect(forgotPasswordRouteAddress);
         }
         res.render('resetPassword', {
@@ -217,7 +219,7 @@ router.get('/reset-password/:token',  (req,res,next) => {
         req.session.emailSuccess = null;
     });
 });
-router.post('/reset/:token',  (req,res,next) => {
+router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
     let hashedPassword;
     async.waterfall([
         function(done) {

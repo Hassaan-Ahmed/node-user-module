@@ -8,8 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-param" content="authenticity_token" />
+    <meta name="csrf-token" content="<%= token %>" />
 
-    <title>SB Admin - Login</title>
+    <title><%= title %></title>
 
     <!-- Bootstrap core CSS-->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -28,17 +30,18 @@
     <div class="card card-login mx-auto mt-5">
         <div class="card-header">Login</div>
         <div class="card-body">
-            <form>
+            <%- messages() %>
+            <form id="gpa4" action="/login" method="post">
                 <div class="form-group">
                     <div class="form-label-group">
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
-                        <label for="inputEmail">Email address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
+                        <label for="email">Email address</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="form-label-group">
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="required">
-                        <label for="inputPassword">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required">
+                        <label for="password">Password</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,11 +52,15 @@
                         </label>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-block" href="index.html">Login</a>
+                <div style="display: none" class="errorMsg alert alert-danger" role="alert">
+                    <span class="fa fa-warning" aria-hidden="true"></span>
+                    <span class="err" > </span>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" onclick="onSubmitForm()">Login</button>
             </form>
             <div class="text-center">
-                <a class="d-block small mt-3" href="register.html">Register an Account</a>
-                <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+                <a class="d-block small mt-3" href="/register">Register an Account</a>
+                <a class="d-block small" href="/forgot-password">Forgot Password?</a>
             </div>
         </div>
     </div>
@@ -65,6 +72,38 @@
 
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script>
+    function onSubmitForm(){
+        event.preventDefault();
+        $('.errorMsg').hide();
+
+        /*------<Get Form Values>-----*/
+        let email = $('#gpa4 input[name=email]').val();
+        let password = $('#gpa4 input[name=password]').val();
+        let error_flag = false;
+        /*---------------------<FORM VALIDATIONS START>---------------------*/
+
+        let password_regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        let email_regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+        if (!email_regex.test(email)) {
+            $('.errorMsg .err').text('Please enter a valid email address.');
+            $('.errorMsg').show();
+            error_flag = true;
+        } else if (!password_regex.test(password)) {
+            $('.errorMsg .err').text('Please enter a valid password.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }
+        /*---------------------<FORM VALIDATIONS END>---------------------*/
+        /*------<Submit Form>-----*/
+        else if(error_flag === false) {
+            $('body').addClass("loader_active");
+            $("#gpa4").submit();
+
+        }
+    }
+</script>
 
 </body>
 
