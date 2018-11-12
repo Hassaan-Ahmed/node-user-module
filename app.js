@@ -17,7 +17,6 @@ const MongoStore = require('connect-mongo')(expressSession);
 
 
 
-
 mongoose.connect(config.database, { useNewUrlParser: true });
 mongoose.connection
     .once('open',() => { console.log('working'); })
@@ -100,14 +99,6 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/admin', userRouter);
 
-app.use((req, res, next)=> {
-
-    let token = req.csrfToken();
-    res.cookie('XSRF-TOKEN', token);
-    res.locals.csrfToken = token;
-
-    next();
-});
 /*------<Catch 404 And Forward To Error Handler>-----*/
 app.use(function(req, res, next) {
     next(createError(404));
