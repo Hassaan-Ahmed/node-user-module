@@ -17,10 +17,12 @@ const forgotPasswordRouteAddress = '/forgot-password';
 const loginRouteAddress = '/login';
 const profileRouteAddress = '/profile';
 const changePasswordRouteAddress = '/change-password';
+const profilePictureFolder = 'profile-images/';
+const profilePictureDestination = './public/profile-images/';
 
 //Storage Engine For Upload Image
 const storage = multer.diskStorage({
-    destination: './public/profile-images/',
+    destination: profilePictureDestination,
     filename: function (req, file, callback) {
         callback(null,file.fieldname + '-' + Date.now()+ path.extname(file.originalname));
     }
@@ -47,7 +49,7 @@ const upload = multer({
     storage: storage,
     limits:{fileSize: 1000000},
     fileFilter: checkFileType
-});
+}).single('profilePicture');
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
@@ -86,13 +88,13 @@ router.get('/register', isLoggedOut, (req, res) => {
         title:'Admin registration form',
     });
 });
-router.post('/register',isLoggedOut, upload.single('profilePicture') , (req,res,next) => {
+router.post('/register',isLoggedOut, upload , (req,res,next) => {
     const body = req.body;
     const firstName = body.firstName;
     const lastName = body.lastName;
     const email = body.email;
     const password = body.password;
-    const profilePicture = req.file.path;
+    const profilePicture = profilePictureFolder+req.file.filename;
     const contactNumber = body.contactNumber;
     req.checkBody('firstName', 'First Name is required').notEmpty();
     req.checkBody('lastName', 'Last Name is required').notEmpty();
@@ -102,14 +104,13 @@ router.post('/register',isLoggedOut, upload.single('profilePicture') , (req,res,
     req.checkBody('password2', 'Passwords do not match').equals(password);
     req.checkBody('contactNumber', 'Please enter a correct contact number').isNumeric();
     req.checkBody('profilePicture', 'Please upload a correct picture').equals(password);
-    // req.checkBody('password2', 'Passwords do not match').equals(password);
     console.log('validated data');
     let errors = req.validationErrors();
-    if (errors) {
-        res.render('register', {
-            errors: errors
-        });
-    }
+    // if (errors) {
+    //     res.render('register', {
+    //         errors: errors
+    //     });
+    // }
 
     console.log('setting new user values');
     let newUser = new User({
@@ -130,16 +131,23 @@ router.post('/register',isLoggedOut, upload.single('profilePicture') , (req,res,
                 console.log(err);
             } else {
                 newUser.password = hash;
-                newUser.save(function (err) {
-                    if(err){
-                        console.log(err);
-                    }
-                    else {
+                newUser.save()
+                    .then(() => {
                         console.log('saving new user');
                         req.flash('success', 'your are successfully registered');
-                        res.redirect(loginRouteAddress);
-                    }
-                });
+                        // res.header({
+                        //     title:'Admin change password form',
+                        //     errors: errors
+                        // });
+
+                        req.logIn(newUser, function(err) {
+                            res.redirect(profileRouteAddress);
+                            throw Error (err);
+                        });
+                    })
+                    .catch((error)=> {
+                        console.log(error);
+                    })
             }
         });
 
@@ -178,8 +186,17 @@ router.get('/logout',isLoggedIn, (req,res,next) => {
 });
 // change password Form
 router.get('/change-password',isLoggedIn,  (req,res,next) => {
+    const user = req.user;
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+    const email = user.email;
+    const profilePicture = user.profilePicture;
     res.render('change-password', {
-        title:'Admin change password form'
+        title:'Admin change password form',
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        profilePicture: profilePicture,
     });
 });
 router.post('/change-password', isLoggedIn, (req,res,next) => {
@@ -194,10 +211,11 @@ router.post('/change-password', isLoggedIn, (req,res,next) => {
     console.log('validated data');
     let errors = req.validationErrors();
     if (errors) {
-        res.render('change-password', {
+        res.header({
             title:'Admin change password form',
             errors: errors
-        });
+            });
+        res.redirect('/change-password');
         res.status(200).end();
     }
     let result = bcrypt.compareSync(body.password, req.user.password);
@@ -414,6 +432,35 @@ router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
     ], function(err) {
         if (err) return next(err);
         res.redirect(profileRouteAddress);
+    });
+});
+router.post('/update-profile',(req, res, next) =>{
+   let body = req.body;
+    req.checkBody('first_name', 'First Name is required').notEmpty();
+    req.checkBody('last_name', 'Last Name is required').notEmpty();
+    req.checkBody('email', 'Email is required').isEmail();
+    let errors = req.validationErrors();
+    if (errors) {
+        res.header({title:'Admin change password form',
+            errors: errors});
+        res.redirect('/profile');
+        res.status(200).end();
+    }
+   User.findById(req.user._id)
+    .then((user) =>{
+        user.firstName = body.first_name;
+        user.lastName =body.last_name;
+        // user.email(body.email);
+        user.updatedAt = Date.now();
+        user.save(function (error) {
+            if(error){
+                console.log(error);
+            }
+            else {
+                console.log('saving updates');
+                req.flash('success', 'your profile successfully updated.');
+            }
+        });
     });
 });
 module.exports = router;

@@ -16,14 +16,14 @@
 
                     <div class="col-12  col-lg-3">
                         <div id="account-edit-photo">
-                            <div><img src="images/demo/account-profile.jpg" alt="Account Image"></div>
+                            <div><img src="<%= profilePicture%>" alt="Account Image"></div>
                             <p><a href="#!" class="btn btn-green-pro">Change Profile Picture</a></p>
                             <p><a href="#!" class="btn">Delete Photo</a></p>
                         </div>
                     </div><!-- close .col -->
                     <div class="col">
 
-                        <form class="account-settings-form">
+                        <form id="gpa4" class="account-settings-form" method="post" action="/update-profile">
 
                             <h5>General Information</h5>
                             <p class="small-paragraph-spacing">By letting us know your name, we can make our support experience much more personal.</p>
@@ -31,14 +31,14 @@
                             <div class="row">
                                 <div class="col-sm">
                                     <div class="form-group">
-                                        <label for="first-name" class="col-form-label">First Name:</label>
-                                        <input type="text" class="form-control" id="first-name" value="<%= firstName%>">
+                                        <label for="first_name" class="col-form-label">First Name:</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="<%= firstName%>">
                                     </div>
                                 </div><!-- close .col -->
                                 <div class="col-sm">
                                     <div class="form-group">
-                                        <label for="last-name" class="col-form-label">Last Name:</label>
-                                        <input type="text" class="form-control" id="last-name" value="<%= lastName%>">
+                                        <label for="last_name" class="col-form-label">Last Name:</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="<%= lastName%>">
                                     </div>
                                 </div><!-- close .col -->
                             </div><!-- close .row -->
@@ -50,43 +50,21 @@
                             <div class="row">
                                 <div class="col-sm">
                                     <div class="form-group">
-                                        <label for="e-mail" class="col-form-label">E-mail</label>
-                                        <input type="text" class="form-control" id="e-mail" value="<%= email%>">
+                                        <label for="email" class="col-form-label">E-mail</label>
+                                        <input type="email" class="form-control" id="email" disabled name="email" value="<%=email %>">
                                     </div>
                                 </div><!-- close .col -->
                                 <div class="col-sm">
 
                                 </div><!-- close .col -->
 
-                            </div><!-- close .row -->
-                            <!--<h5>Change Password</h5>-->
-                            <!--<p class="small-paragraph-spacing">You can change the password you use for your account here.</p>-->
-                            <!--<div class="row">-->
-                                <!--<div class="col-sm">-->
-                                    <!--<div class="form-group">-->
-                                        <!--<label for="password" class="col-form-label">Current Password:</label>-->
-                                        <!--<input type="text" class="form-control" id="password" value="&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;&middot;">-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; close .col &ndash;&gt;-->
-                                <!--<div class="col-sm">-->
-                                    <!--<div class="form-group">-->
-                                        <!--<label for="new-password" class="col-form-label">New Password:</label>-->
-                                        <!--<input type="text" class="form-control" id="new-password" placeholder="Minimum of 6 characters">-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; close .col &ndash;&gt;-->
-                                <!--<div class="col-sm">-->
-                                    <!--<div class="form-group">-->
-                                        <!--<div><label for="confirm-password" class="col-form-label">&nbsp; &nbsp;</label></div>-->
-                                        <!--<input type="text" class="form-control" id="confirm-password" placeholder="Confirm New Password">-->
-                                    <!--</div>-->
-                                <!--</div>&lt;!&ndash; close .col &ndash;&gt;-->
-                            <!--</div>&lt;!&ndash; close .row &ndash;&gt;-->
+                            </div>
                             <div style="display: none" class="errorMsg alert alert-danger" role="alert">
                                 <span class="fa fa-warning" aria-hidden="true"></span>
                                 <span class="err" > </span>
                             </div>
                             <hr>
-                            <p><button type="button" class="btn btn-green-pro">Save Changes</button></p>
+                            <p><button type="button" class="btn btn-green-pro" onclick="onSubmitForm()">Save Changes</button></p>
                             <br>
                         </form>
 
@@ -102,3 +80,38 @@
 </div><!-- close #sidebar-bg-->
 
 <%- include('includes/registered-user-footer'); -%>
+<script>
+    function onSubmitForm(){
+        event.preventDefault();
+        $('.errorMsg').hide();
+
+        /*------<Get Form Values>-----*/
+        let email = $('#gpa4 input[name=email]').val();
+        let firstName = $('#gpa4 input[name=first_name]').val();
+        let lastName = $('#gpa4 input[name=last_name]').val();
+        let error_flag = false;
+        console.log('email ', email);
+        /*---------------------<FORM VALIDATIONS START>---------------------*/
+
+        let email_regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        if (firstName === "") {
+            $('.errorMsg .err').text('Please enter your valid first name');
+            $('.errorMsg').show();
+            error_flag = true;
+        } else if (lastName === "") {
+            $('.errorMsg .err').text('Please enter your valid last name');
+            $('.errorMsg').show();
+            error_flag = true;
+        } else if (!email_regex.test(email)) {
+            $('.errorMsg .err').text('Please enter a valid email address.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }
+        /*---------------------<FORM VALIDATIONS END>---------------------*/
+        /*------<Submit Form>-----*/
+        else if(error_flag === false) {
+            $("#gpa4").submit();
+
+        }
+    }
+</script>

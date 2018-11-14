@@ -23,7 +23,7 @@
 
         <div id="video-search-header">
             <div id="search-icon-more"></div>
-            <input type="text" placeholder="Search for Movies or TV Series" aria-label="Search">
+            <input type="text" placeholder="Search " aria-label="Search">
             <div id="video-search-header-filtering">
                 <form id="video-search-header-filtering-padding">
                     <div class="row">
@@ -129,15 +129,15 @@
 
         <div id="header-user-profile">
             <div id="header-user-profile-click" class="noselect">
-                <img src="images/demo/user-profile.jpg" alt="Suzie">
-                <div id="header-username">Suzie Smith</div><i class="fas fa-angle-down"></i>
+                <img src="<%= profilePicture %>" alt="Image">
+                <div id="header-username"><%=firstName +' '+ lastName%></div><i class="fas fa-angle-down"></i>
             </div><!-- close #header-user-profile-click -->
             <div id="header-user-profile-menu">
                 <ul>
                     <li><a href="/profile"><span class="icon-User"></span>My Profile</a></li>
-                    <li><a href="#"><span class="icon-Favorite-Window"></span>My Favorites</a></li>
+                    <!--<li><a href="#"><span class="icon-Favorite-Window"></span>My Favorites</a></li>-->
                     <li><a href="/change-password"><span class="icon-Gears"></span>Change Password</a></li>
-                    <li><a href="#"><span class="icon-Life-Safer"></span>Help/Support</a></li>
+                    <!--<li><a href="#"><span class="icon-Life-Safer"></span>Help/Support</a></li>-->
                     <li><a href="/logout"><span class="icon-Power-3"></span>Log Out</a></li>
                 </ul>
             </div><!-- close #header-user-profile-menu -->
