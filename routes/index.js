@@ -17,8 +17,6 @@ const forgotPasswordRouteAddress = '/forgot-password';
 const loginRouteAddress = '/login';
 const profileRouteAddress = '/profile';
 const changePasswordRouteAddress = '/change-password';
-let passwordMatched = false;
-let passwordMatchedInLastTerm = null;
 
 //Storage Engine For Upload Image
 const storage = multer.diskStorage({
@@ -181,28 +179,29 @@ router.get('/logout',isLoggedIn, (req,res,next) => {
 // change password Form
 router.get('/change-password',isLoggedIn,  (req,res,next) => {
     res.render('change-password', {
-        title:'Admin change password form',
-        success: passwordMatched
+        title:'Admin change password form'
     });
-    passwordMatched = false;
 });
 router.post('/change-password', isLoggedIn, (req,res,next) => {
     console.log('new password ',req.body.new_password);
-    console.log('passwordMatchedInLastTerm ', passwordMatchedInLastTerm);
+    console.log('password ',req.body.password);
     const body = req.body;
-    if (req.body.new_password && passwordMatchedInLastTerm){
-        const new_password = body.new_password;
-        // req.checkBody('new_password', 'New password is required').notEmpty();
-        // req.checkBody('confirm_password', 'Passwords do not match').equals(new_password);
-        // console.log('validated data');
-        // let errors = req.validationErrors();
-        // if (errors) {
-        //     res.render('change-password', {
-        //         title:'Admin change password form',
-        //         errors: errors
-        //     });
-        // }
-        console.log('update password is working');
+    const password = body.password;
+    const new_password = body.new_password;
+    req.checkBody('password', 'Password is required').notEmpty();
+    req.checkBody('new_password', 'New Password is required').notEmpty();
+    req.checkBody('confirm_password', 'Passwords do not match').equals(password);
+    console.log('validated data');
+    let errors = req.validationErrors();
+    if (errors) {
+        res.render('change-password', {
+            title:'Admin change password form',
+            errors: errors
+        });
+        res.status(200).end();
+    }
+    let result = bcrypt.compareSync(body.password, req.user.password);
+    if (result) {
         User.findById(req.user._id)
             .then((user) => {
                 bcrypt.genSalt(10, function (err, salt) {
@@ -229,27 +228,12 @@ router.post('/change-password', isLoggedIn, (req,res,next) => {
 
                 });
             });
+    } else {
+        console.log("Password wrong");
+        req.flash('error', 'Password do not match. Enter correct password');
+        res.redirect(changePasswordRouteAddress);
 
     }
-    else {
-        let result = bcrypt.compareSync(req.body.password, req.user.password);
-        if (result) {
-            console.log("Password correct");
-            req.flash('success', 'Password matched');
-            passwordMatched = true;
-            passwordMatchedInLastTerm = true;
-            res.redirect(changePasswordRouteAddress);
-        } else {
-            console.log("Password wrong");
-            req.flash('error', 'Password do not match. Enter correct password');
-            passwordMatched = false;
-            passwordMatchedInLastTerm = false;
-            res.redirect(changePasswordRouteAddress);
-
-        }
-    }
-
-
 });
 router.get('/forgot-password' , isLoggedOut, (req,res,next) => {
     res.render('forgot-password',{
@@ -292,7 +276,6 @@ router.post('/forgot-password' , isLoggedOut, (req,res,next) => {
                               <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                               <link rel="stylesheet" href="/stylesheets/customStyle.css" type="text/css">
                             </head>
-
                             <body style="margin: 0; padding: 0;">
                                     <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.<br><br>
                                 Please click on the following link, or paste this into your browser to complete the process: <br><br>
@@ -302,7 +285,6 @@ router.post('/forgot-password' , isLoggedOut, (req,res,next) => {
                                     --      
                                     <p>This is an auto generated email.</p>
                                     </span>
-
                             </body>
                             </html>
                     `;
@@ -399,7 +381,6 @@ router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
                               <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                               <link rel="stylesheet" href="/stylesheets/customStyle.css" type="text/css">
                             </head>
-
                             <body style="margin: 0; padding: 0;">
                                     <p'Hello,<br><br>
                                     This is a confirmation that the password for your account ${user.email} has just been changed. <br></p> 
@@ -407,7 +388,6 @@ router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
                                     --      
                                     <p>This is an auto generated email.</p>
                                     </span>
-
                             </body>
                             </html>
                     `;
