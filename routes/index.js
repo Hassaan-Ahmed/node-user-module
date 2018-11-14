@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const app = require('../app');
 const User = require('../model/user');
@@ -462,5 +463,27 @@ router.post('/update-profile',(req, res, next) =>{
             }
         });
     });
+});
+router.get('/delete-photos', (req, res, next) => {
+    User.findById(req.user._id)
+        .then((user) => {
+            console.log(user.profilePicture);
+            fs.unlinkSync('public/'+user.profilePicture)
+                .then(() => {
+                    console.log('profile picture removed');
+                    remove(user.profilePicture)
+                      .save();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            req.flash('success', 'Profile picture has been removed.');
+            res.redirect('back');
+        })
+        .catch((err) => {
+           console.log(err);
+            req.flash('error', 'Something went wrong.'+err);
+           res.redirect('back');
+        });
 });
 module.exports = router;

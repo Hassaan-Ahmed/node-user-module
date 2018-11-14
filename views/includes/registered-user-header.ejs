@@ -129,7 +129,7 @@
 
         <div id="header-user-profile">
             <div id="header-user-profile-click" class="noselect">
-                <img src="<%= profilePicture %>" alt="Image">
+                <img src="<%= profilePicture !== '' ? profilePicture : 'https://via.placeholder.com/150x150' %>" alt="Image">
                 <div id="header-username"><%=firstName +' '+ lastName%></div><i class="fas fa-angle-down"></i>
             </div><!-- close #header-user-profile-click -->
             <div id="header-user-profile-menu">
