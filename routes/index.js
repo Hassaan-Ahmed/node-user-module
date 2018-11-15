@@ -16,7 +16,7 @@ let multer  = require('multer');
 const resetPasswordRoute = '/reset-password/';
 const forgotPasswordRouteAddress = '/forgot-password';
 const loginRouteAddress = '/login';
-const profileRouteAddress = '/profile';
+const profileRouteAddress = '/create-user';
 const changePasswordRouteAddress = '/change-password';
 const profilePictureFolder = 'profile-images/';
 const profilePictureDestination = './public/profile-images/';
@@ -93,7 +93,7 @@ router.post('/login', isLoggedOut, (req,res,next) => {
         failureFlash: true
     })(req, res, next);
 });
-router.get('/register', isAdminLoggedIn, (req, res) => {
+router.get('/create-user', isAdminLoggedIn, (req, res) => {
     res.render('register', {
         title:'Admin registration form',
     });

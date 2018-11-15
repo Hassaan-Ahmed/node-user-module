@@ -10,7 +10,20 @@
                 <li class="current"><a href="/profile">Account Settings</a></li>
                 <li><a href="/change-password">Change Password</a></li>
             </ul><!-- close .dashboard-sub-menu -->
-
+            <div class="tabs">
+                <ul class="tabs-nav">
+                    <li><a href="#tab-1">Features</a></li>
+                    <li><a href="#tab-2">Details</a></li>
+                </ul>
+                <div class="tabs-stage">
+                    <div id="tab-1">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec neque nisi, dictum aliquet lectus.</p>
+                    </div>
+                    <div id="tab-2">
+                        <p>Phasellus pharetra aliquet viverra. Donec scelerisque tincidunt diam, eu fringilla urna auctor at.</p>
+                    </div>
+                </div>
+            </div>
             <div class="container-fluid">
                 <div class="row">
 
@@ -20,18 +33,19 @@
 
                             <form id="update_profile_picture" action="/update-profile-picture" method="post" enctype="multipart/form-data">
                                 <input style="display: none;" id="file_update_profile_picture" type="file" name="profilePicture" class="form-control" required>
-                                <button type="button" class="btn btn-green-pro" id="btn_update_profile_picture">Change Profile Picture</button>
+                                <div class="row">
+                                    <a  class="btn btn-info" style="padding: 11px ; width: 92px; background: #36eaeb; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" id="btn_update_profile_picture"><span class="icon-Edit"></span></a>
+                                    <a href="/delete-photo" style="padding: 11px; width: 92px; background: red; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" class="btn btn-danger"><span class="icon-Bucket">Delete</span></a>
+                                </div>
+
                             </form>
 
-                            <p><a href="/delete-photo" class="btn">Delete Photo</a></p>
+
                         </div>
                     </div><!-- close .col -->
                     <div class="col">
 
                         <form id="gpa4" class="account-settings-form" method="post" action="/update-profile">
-
-                            <h5>General Information</h5>
-                            <p class="small-paragraph-spacing">By letting us know your name, we can make our support experience much more personal.</p>
                             <%- messages() %>
                             <div class="row">
                                 <div class="col-sm">
@@ -47,15 +61,10 @@
                                     </div>
                                 </div><!-- close .col -->
                             </div><!-- close .row -->
-                            <hr>
-
-                            <h5>Account Information</h5>
-                            <p class="small-paragraph-spacing">You can change the email address you use here.</p>
-
                             <div class="row">
                                 <div class="col-sm">
                                     <div class="form-group">
-                                        <label for="email" class="col-form-label">E-mail</label>
+                                        <label for="email" class="col-form-label">Email Address</label>
                                         <input type="email" class="form-control" id="email" disabled name="email" value="<%=email %>">
                                     </div>
                                 </div><!-- close .col -->
@@ -69,7 +78,7 @@
                                 <span class="err" > </span>
                             </div>
                             <hr>
-                            <p><button type="button" class="btn btn-green-pro" onclick="onSubmitForm()">Save Changes</button></p>
+                            <p><button type="button" class="btn btn-green-pro" onclick="onSubmitForm()">Update Profile</button></p>
                             <br>
                         </form>
 
@@ -129,5 +138,17 @@
             }
         });
     });
+    // Show the first tab by default
+    $('.tabs-stage div').hide();
+    $('.tabs-stage div:first').show();
+    $('.tabs-nav li:first').addClass('tab-active');
 
+    // Change tab class and display content
+    $('.tabs-nav a').on('click', function(event){
+        event.preventDefault();
+        $('.tabs-nav li').removeClass('tab-active');
+        $(this).parent().addClass('tab-active');
+        $('.tabs-stage div').hide();
+        $($(this).attr('href')).show();
+    });
 </script>
