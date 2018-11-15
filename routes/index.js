@@ -51,6 +51,15 @@ const upload = multer({
     limits:{fileSize: 1000000},
     fileFilter: checkFileType
 });
+function isAdminLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated() && req.user.role === 'Admin')
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/login');
+}
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
@@ -89,7 +98,7 @@ router.get('/register', isLoggedOut, (req, res) => {
         title:'Admin registration form',
     });
 });
-router.post('/register',isLoggedOut, upload.single('profilePicture') , (req,res,next) => {
+router.post('/register',isAdminLoggedIn, upload.single('profilePicture') , (req,res,next) => {
     const body = req.body;
     const firstName = body.firstName;
     const lastName = body.lastName;
@@ -479,8 +488,15 @@ router.post('/update-profile',isLoggedIn,(req, res, next) =>{
 router.get('/delete-photo', isLoggedIn, (req, res, next) => {
     User.findOne({profilePicture: req.user.profilePicture})
         .then((user) => {
-            console.log(user.profilePicture);
-                fs.unlinkSync('public/'+user.profilePicture);
+            if (user.profilePicture !== ""){
+                console.log('unlinking the file');
+                try {
+                    fs.unlinkSync('public/'+user.profilePicture);
+                }
+                catch (err) {
+                    console.log('No file found ', err);
+                }
+            }
                 console.log('profile picture removed');
                 user.profilePicture = '';
                 user.updatedAt = Date.now();
@@ -503,8 +519,14 @@ router.post('/update-profile-picture',isLoggedIn, upload.single('profilePicture'
     const profilePicture = profilePictureFolder+req.file.filename;
     User.findOne({_id: req.user._id})
         .then((user) => {
-            if (user.profilePicture !== ''){
-                fs.unlinkSync('public/'+user.profilePicture);
+            if (user.profilePicture !== ""){
+                console.log('unlinking the file');
+                try {
+                    fs.unlinkSync('public/'+user.profilePicture);
+                }
+                catch (err) {
+                    console.log('No file found ', err);
+                }
             }
             user.profilePicture = profilePicture;
             user.updatedAt = Date.now();
