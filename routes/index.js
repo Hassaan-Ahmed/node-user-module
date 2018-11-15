@@ -112,47 +112,54 @@ router.post('/register',isLoggedOut, upload , (req,res,next) => {
     //         errors: errors
     //     });
     // }
-
-    console.log('setting new user values');
-    let newUser = new User({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-        profilePicture: profilePicture,
-        contactNumber: contactNumber,
-        createdAt: Date.now()
-    });
-
-    bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(newUser.password, salt,function (err, hash) {
-            console.log('executed');
-            if (err){
-                console.log('in error');
-                console.log(err);
-            } else {
-                newUser.password = hash;
-                newUser.save()
-                    .then(() => {
-                        console.log('saving new user');
-                        req.flash('success', 'your are successfully registered');
-                        // res.header({
-                        //     title:'Admin change password form',
-                        //     errors: errors
-                        // });
-
-                        req.logIn(newUser, function(err) {
-                            res.redirect(profileRouteAddress);
-                            throw Error (err);
-                        });
-                    })
-                    .catch((error)=> {
-                        console.log(error);
-                    })
-            }
+User.findOne({email: req.body.email})
+    .then((user) => {
+        req.flash('error', user.email+' already exists');
+        res.redirect(loginRouteAddress);
+    })
+    .catch(() => {
+        console.log('setting new user values');
+        let newUser = new User({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password,
+            profilePicture: profilePicture,
+            contactNumber: contactNumber,
+            createdAt: Date.now()
         });
 
+        bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(newUser.password, salt,function (err, hash) {
+                console.log('executed');
+                if (err){
+                    console.log('in error');
+                    console.log(err);
+                } else {
+                    newUser.password = hash;
+                    newUser.save()
+                        .then(() => {
+                            console.log('saving new user');
+                            req.flash('success', 'your are successfully registered');
+                            // res.header({
+                            //     title:'Admin change password form',
+                            //     errors: errors
+                            // });
+
+                            req.logIn(newUser, function(err) {
+                                res.redirect(profileRouteAddress);
+                                throw Error (err);
+                            });
+                        })
+                        .catch((error)=> {
+                            console.log(error);
+                        })
+                }
+            });
+
+        });
     });
+
 
 });
 
@@ -464,14 +471,16 @@ router.post('/update-profile',(req, res, next) =>{
         });
     });
 });
-router.get('/delete-photos', (req, res, next) => {
+router.delete('/delete-photos', (req, res, next) => {
     User.findById(req.user._id)
         .then((user) => {
             console.log(user.profilePicture);
             fs.unlinkSync('public/'+user.profilePicture)
                 .then(() => {
                     console.log('profile picture removed');
-                    remove(user.profilePicture)
+                    remove(user.profilePicture, (err) => {
+                        console.log(err);
+                    })
                       .save();
                 })
                 .catch((error) => {
