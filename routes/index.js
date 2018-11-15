@@ -180,9 +180,15 @@ router.get('/profile',isLoggedIn, (req,res,next) => {
 });
 // dashboard
 router.get('/',isLoggedIn, (req,res,next) => {
-
+    const user = req.user;
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+    const profilePicture = user.profilePicture;
     res.render('dashboard',{
         title: 'Dashboard',
+        firstName: firstName,
+        lastName: lastName,
+        profilePicture: profilePicture
     });
 });
 // logout
