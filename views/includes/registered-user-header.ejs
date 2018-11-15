@@ -137,7 +137,9 @@
                     <li><a href="/profile"><span class="icon-User"></span>My Profile</a></li>
                     <!--<li><a href="#"><span class="icon-Favorite-Window"></span>My Favorites</a></li>-->
                     <li><a href="/change-password"><span class="icon-Gears"></span>Change Password</a></li>
-                    <!--<li><a href="#"><span class="icon-Life-Safer"></span>Help/Support</a></li>-->
+                    <% if (role !== ''){ %>
+                    <li><a href="/register"><span class="icon-Life-Safer"></span>Register</a></li>
+                    <% }%>
                     <li><a href="/logout"><span class="icon-Power-3"></span>Log Out</a></li>
                 </ul>
             </div><!-- close #header-user-profile-menu -->

@@ -93,7 +93,7 @@ router.post('/login', isLoggedOut, (req,res,next) => {
         failureFlash: true
     })(req, res, next);
 });
-router.get('/register', isLoggedOut, (req, res) => {
+router.get('/register', isAdminLoggedIn, (req, res) => {
     res.render('register', {
         title:'Admin registration form',
     });
@@ -154,10 +154,10 @@ User.findOne({email: req.body.email})
                             //     errors: errors
                             // });
 
-                            req.logIn(newUser, function(err) {
+                            // req.logIn(newUser, function(err) {
                                 res.redirect(profileRouteAddress);
-                                throw Error (err);
-                            });
+                                // throw Error (err);
+                            // });
                         })
                         .catch((error)=> {
                             console.log('Something went wrong while save the registered user ',error);
@@ -178,12 +178,14 @@ router.get('/profile',isLoggedIn, (req,res,next) => {
     const lastName = user.lastName;
     const email = user.email;
     const profilePicture = user.profilePicture;
-    console.log(user);
+    let role = user.role;
+    let roleType = role === 'Admin' ? role : '';
     res.render('profile',{
         firstName: firstName,
         lastName: lastName,
         email: email,
         profilePicture: profilePicture,
+        role: roleType,
         title: 'Profile'
     });
 });
@@ -193,11 +195,14 @@ router.get('/',isLoggedIn, (req,res,next) => {
     const firstName = user.firstName;
     const lastName = user.lastName;
     const profilePicture = user.profilePicture;
+    let role = user.role;
+    role = role === 'Admin' ? role : '';
     res.render('dashboard',{
         title: 'Dashboard',
         firstName: firstName,
         lastName: lastName,
-        profilePicture: profilePicture
+        profilePicture: profilePicture,
+        role: role
     });
 });
 // logout
@@ -213,12 +218,15 @@ router.get('/change-password',isLoggedIn,  (req,res,next) => {
     const lastName = user.lastName;
     const email = user.email;
     const profilePicture = user.profilePicture;
+    let role = user.role;
+    role = role === 'Admin' ? role : '';
     res.render('change-password', {
         title:'Admin change password form',
         firstName: firstName,
         lastName: lastName,
         email: email,
         profilePicture: profilePicture,
+        role: role
     });
 });
 router.post('/change-password', isLoggedIn, (req,res,next) => {
