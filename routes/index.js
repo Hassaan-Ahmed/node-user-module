@@ -470,26 +470,26 @@ router.post('/update-profile',isLoggedIn,(req, res, next) =>{
         });
     });
 });
-router.get('/delete-photos', isLoggedIn, (req, res, next) => {
-    User.findOne({_id: req.user._id})
+router.get('/delete-photo', isLoggedIn, (req, res, next) => {
+    User.findOne({profilePicture: req.user.profilePicture})
         .then((user) => {
             console.log(user.profilePicture);
-            fs.unlinkSync('public/'+user.profilePicture);
-            console.log('profile picture removed');
-            user.profilePicture = '';
-            user.updatedAt = Date.now();
-            user.save()
-                .then(() => {
-                    req.flash('success', 'Profile picture has been removed.');
-                    res.redirect('back');
-                })
-                .catch((error) => {
-                    console.log("Unable to save deleted file ",error);
-                });
+                fs.unlinkSync('public/'+user.profilePicture);
+                console.log('profile picture removed');
+                user.profilePicture = '';
+                user.updatedAt = Date.now();
+                user.save()
+                    .then(() => {
+                        req.flash('success', 'Profile picture has been removed.');
+                        res.redirect('back');
+                    })
+                    .catch((error) => {
+                        console.log("Unable to save deleted file ",error);
+                    });
         })
         .catch((err) => {
            console.log('unable to find the profile picture in database ',err);
-            req.flash('error', 'Something went wrong.'+err);
+            req.flash('error', 'Something went wrong. Unable to find your profile picture '+err);
            res.redirect('back');
         });
 });
