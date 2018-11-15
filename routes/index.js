@@ -50,7 +50,7 @@ const upload = multer({
     storage: storage,
     limits:{fileSize: 1000000},
     fileFilter: checkFileType
-}).single('profilePicture');
+});
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
@@ -89,7 +89,7 @@ router.get('/register', isLoggedOut, (req, res) => {
         title:'Admin registration form',
     });
 });
-router.post('/register',isLoggedOut, upload , (req,res,next) => {
+router.post('/register',isLoggedOut, upload.single('profilePicture') , (req,res,next) => {
     const body = req.body;
     const firstName = body.firstName;
     const lastName = body.lastName;
@@ -104,7 +104,6 @@ router.post('/register',isLoggedOut, upload , (req,res,next) => {
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('password2', 'Passwords do not match').equals(password);
     req.checkBody('contactNumber', 'Please enter a correct contact number').isNumeric();
-    req.checkBody('profilePicture', 'Please upload a correct picture').equals(password);
     console.log('validated data');
     let errors = req.validationErrors();
     // if (errors) {
@@ -152,7 +151,7 @@ User.findOne({email: req.body.email})
                             });
                         })
                         .catch((error)=> {
-                            console.log(error);
+                            console.log('Something went wrong while save the registered user ',error);
                         })
                 }
             });
@@ -335,7 +334,7 @@ router.post('/forgot-password' , isLoggedOut, (req,res,next) => {
             });
 
         }], function(err) {
-        if (err) return next(err);
+        if (err) return next('Something went wrong in forgot password ',err);
         res.redirect(forgotPasswordRouteAddress);
     });
 });
@@ -367,7 +366,7 @@ router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
                 bcrypt.genSalt(10, function (err, salt) {
                     bcrypt.hash(req.body.password, salt, function (err, hash) {
                         if (err) {
-                            console.log(err);
+                            console.log('Error while encrypting the password ',err);
                         } else {
                             hashedPassword = hash;
                         }
@@ -428,7 +427,7 @@ router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
             };
             mailgun.messages().send(userMailData, function (error, body) {
                 if (error) {
-                    console.log(error);
+                    console.log('Error while sending the email ',error);
                     return next(error);
                 }
                 req.session.emailSuccess = 'Success! Your password has been changed.';
@@ -438,11 +437,11 @@ router.post('/reset-password/:token', isLoggedOut, (req,res,next) => {
             });
         }
     ], function(err) {
-        if (err) return next(err);
+        if (err) return next('Something went wrong in async waterfall method ',err);
         res.redirect(profileRouteAddress);
     });
 });
-router.post('/update-profile',(req, res, next) =>{
+router.post('/update-profile',isLoggedIn,(req, res, next) =>{
    let body = req.body;
     req.checkBody('first_name', 'First Name is required').notEmpty();
     req.checkBody('last_name', 'Last Name is required').notEmpty();
@@ -462,7 +461,7 @@ router.post('/update-profile',(req, res, next) =>{
         user.updatedAt = Date.now();
         user.save(function (error) {
             if(error){
-                console.log(error);
+                console.log('Could not save the updated user profile ',error);
             }
             else {
                 console.log('saving updates');
@@ -471,8 +470,8 @@ router.post('/update-profile',(req, res, next) =>{
         });
     });
 });
-router.get('/delete-photos', (req, res, next) => {
-    User.findById(req.user._id)
+router.get('/delete-photos', isLoggedIn, (req, res, next) => {
+    User.findOne({_id: req.user._id})
         .then((user) => {
             console.log(user.profilePicture);
             fs.unlinkSync('public/'+user.profilePicture);
@@ -485,13 +484,35 @@ router.get('/delete-photos', (req, res, next) => {
                     res.redirect('back');
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.log("Unable to save deleted file ",error);
                 });
         })
         .catch((err) => {
-           console.log(err);
+           console.log('unable to find the profile picture in database ',err);
             req.flash('error', 'Something went wrong.'+err);
            res.redirect('back');
+        });
+});
+router.post('/update-profile-picture',isLoggedIn, upload.single('profilePicture'), (req, res, next) => {
+    const profilePicture = profilePictureFolder+req.file.filename;
+    User.findOne({_id: req.user._id})
+        .then((user) => {
+            if (user.profilePicture !== ''){
+                fs.unlinkSync('public/'+user.profilePicture);
+            }
+            user.profilePicture = profilePicture;
+            user.updatedAt = Date.now();
+            user.save()
+                .then(() => {
+                    req.flash('success', 'Profile Picture Updated');
+                    res.redirect('back');
+                })
+                .catch((error) =>{
+                   console.log('Updated profile picture could not be saved ', error);
+                });
+        })
+        .catch((err) =>{
+            console.log('Could not update the profile picture ', err);
         });
 });
 module.exports = router;

@@ -17,7 +17,12 @@
                     <div class="col-12  col-lg-3">
                         <div id="account-edit-photo">
                             <div><img src="<%= profilePicture !== '' ? profilePicture : 'https://via.placeholder.com/150x150' %>" alt="Account Image"></div>
-                            <p><a href="#!" class="btn btn-green-pro">Change Profile Picture</a></p>
+
+                            <form id="update_profile_picture" action="/update-profile-picture" method="post" enctype="multipart/form-data">
+                                <input style="display: none;" id="file_update_profile_picture" type="file" name="profilePicture" class="form-control" required>
+                                <button type="button" class="btn btn-green-pro" id="btn_update_profile_picture">Change Profile Picture</button>
+                            </form>
+
                             <p><a href="/delete-photos" class="btn">Delete Photo</a></p>
                         </div>
                     </div><!-- close .col -->
@@ -114,4 +119,15 @@
 
         }
     }
+    $(document).ready(function() {
+        const profile = $('#file_update_profile_picture');
+        $("#btn_update_profile_picture").click(() =>{
+            profile.slideDown().show();
+            if ( profile.val() !== '')
+            {
+                $("#update_profile_picture").submit();
+            }
+        });
+    });
+
 </script>
