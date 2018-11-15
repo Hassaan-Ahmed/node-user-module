@@ -471,23 +471,22 @@ router.post('/update-profile',(req, res, next) =>{
         });
     });
 });
-router.delete('/delete-photos', (req, res, next) => {
+router.get('/delete-photos', (req, res, next) => {
     User.findById(req.user._id)
         .then((user) => {
             console.log(user.profilePicture);
-            fs.unlinkSync('public/'+user.profilePicture)
+            fs.unlinkSync('public/'+user.profilePicture);
+            console.log('profile picture removed');
+            user.profilePicture = '';
+            user.updatedAt = Date.now();
+            user.save()
                 .then(() => {
-                    console.log('profile picture removed');
-                    remove(user.profilePicture, (err) => {
-                        console.log(err);
-                    })
-                      .save();
+                    req.flash('success', 'Profile picture has been removed.');
+                    res.redirect('back');
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-            req.flash('success', 'Profile picture has been removed.');
-            res.redirect('back');
         })
         .catch((err) => {
            console.log(err);
