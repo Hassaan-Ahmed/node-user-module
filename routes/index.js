@@ -94,7 +94,7 @@ router.post('/login', isLoggedOut, (req,res,next) => {
     })(req, res, next);
 });
 router.get('/create-user', isAdminLoggedIn, (req, res) => {
-    res.render('register', {
+    res.render('create-user', {
         title:'Admin registration form',
     });
 });

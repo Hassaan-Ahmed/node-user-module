@@ -3,49 +3,29 @@
 
 
     <main id="col-main">
+      <div class="dashboard-container">
 
-        <div class="dashboard-container">
-
-            <ul class="dashboard-sub-menu">
-                <li class="current"><a href="/profile">Account Settings</a></li>
-                <li><a href="/change-password">Change Password</a></li>
+            <ul class="nav nav-tabs dashboard-sub-menu" role="tablist">
+                <li role="presentation" class="active current"><a href="#account_settings" aria-controls="home" role="tab" data-toggle="tab">Account Settings</a></li>
+                <li role="presentation"><a href="#change_password" aria-controls="profile" role="tab" data-toggle="tab">Change Password</a></li>
             </ul><!-- close .dashboard-sub-menu -->
-            <div class="tabs">
-                <ul class="tabs-nav">
-                    <li><a href="#tab-1">Features</a></li>
-                    <li><a href="#tab-2">Details</a></li>
-                </ul>
-                <div class="tabs-stage">
-                    <div id="tab-1">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec neque nisi, dictum aliquet lectus.</p>
-                    </div>
-                    <div id="tab-2">
-                        <p>Phasellus pharetra aliquet viverra. Donec scelerisque tincidunt diam, eu fringilla urna auctor at.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid">
-                <div class="row">
-
+            <div class="tab-content container-fluid">
+                <div role="tabpanel" class="row tab-pane active" id="account_settings">
                     <div class="col-12  col-lg-3">
                         <div id="account-edit-photo">
-                            <div><img src="<%= profilePicture !== '' ? profilePicture : 'https://via.placeholder.com/150x150' %>" alt="Account Image"></div>
-
+                            <div><img src="<%= profilePicture !== '' ? profilePicture : 'images/user-icon.png' %>" alt="Account Image"></div>
                             <form id="update_profile_picture" action="/update-profile-picture" method="post" enctype="multipart/form-data">
-                                <input style="display: none;" id="file_update_profile_picture" type="file" name="profilePicture" class="form-control" required>
+                                <input style="display: none;" id="file_update_profile_picture" type="file" name="profilePicture" class="form-control">
                                 <div class="row">
-                                    <a  class="btn btn-info" style="padding: 11px ; width: 92px; background: #36eaeb; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" id="btn_update_profile_picture"><span class="icon-Edit"></span></a>
+                                    <a  class="btn btn-info" style="padding: 11px ; width: 92px; background: #36eaeb; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" id="btn_update_profile_picture"><span class="icon-Edit">Edit</span></a>
                                     <a href="/delete-photo" style="padding: 11px; width: 92px; background: red; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" class="btn btn-danger"><span class="icon-Bucket">Delete</span></a>
                                 </div>
-
                             </form>
-
-
                         </div>
                     </div><!-- close .col -->
                     <div class="col">
 
-                        <form id="gpa4" class="account-settings-form" method="post" action="/update-profile">
+                        <form id="update_profile" class="account-settings-form" method="post" action="/update-profile">
                             <%- messages() %>
                             <div class="row">
                                 <div class="col-sm">
@@ -85,6 +65,47 @@
                     </div><!-- close .col -->
 
                 </div><!-- close .row -->
+                <div role="tabpanel" class="row tab-pane" id="change_password">
+
+                    <div class="col">
+
+                        <form id="change_password" class="account-settings-form" action="/change-password" method="post">
+
+                            <%- messages() %>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <label for="password" class="col-form-label">Password:</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="**********" value="">
+                                    </div>
+                                </div><!-- close .col -->
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <label for="new_password" class="col-form-label">New Password:</label>
+                                        <input type="password" class="form-control" id="new_password" name="new_password" placeholder="**********" value="">
+                                    </div>
+                                </div><!-- close .col -->
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <label for="confirm_password" class="col-form-label">Confirm Password:</label>
+                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="**********" value="">
+                                    </div>
+                                </div><!-- close .col -->
+                            </div><!-- close .row -->
+                            <div style="display: none" class="errorMsg alert alert-danger" role="alert">
+                                <span class="fa fa-warning" aria-hidden="true"></span>
+                                <span class="err" > </span>
+                            </div>
+                            <hr>
+                            <p><button type="button" class="btn btn-green-pro" onclick="onChangePasswordSubmitForm()">Submit</button></p>
+                            <br>
+                        </form>
+
+                    </div><!-- close .col -->
+
+                </div><!-- close .row -->
             </div><!-- close .container-fluid -->
 
         </div><!-- close .dashboard-container -->
@@ -95,14 +116,15 @@
 
 <%- include('includes/registered-user-footer'); -%>
 <script>
+
     function onSubmitForm(){
         event.preventDefault();
         $('.errorMsg').hide();
 
         /*------<Get Form Values>-----*/
-        let email = $('#gpa4 input[name=email]').val();
-        let firstName = $('#gpa4 input[name=first_name]').val();
-        let lastName = $('#gpa4 input[name=last_name]').val();
+        let email = $('#update-profile input[name=email]').val();
+        let firstName = $('#update-profile input[name=first_name]').val();
+        let lastName = $('#update-profile input[name=last_name]').val();
         let error_flag = false;
         console.log('email ', email);
         /*---------------------<FORM VALIDATIONS START>---------------------*/
@@ -124,31 +146,63 @@
         /*---------------------<FORM VALIDATIONS END>---------------------*/
         /*------<Submit Form>-----*/
         else if(error_flag === false) {
-            $("#gpa4").submit();
+            $("#update-profile").submit();
 
         }
     }
     $(document).ready(function() {
         const profile = $('#file_update_profile_picture');
         $("#btn_update_profile_picture").click(() =>{
-            profile.slideDown().show();
             if ( profile.val() !== '')
             {
                 $("#update_profile_picture").submit();
             }
+            else {
+                $("input").trigger("click");
+            }
         });
     });
-    // Show the first tab by default
-    $('.tabs-stage div').hide();
-    $('.tabs-stage div:first').show();
-    $('.tabs-nav li:first').addClass('tab-active');
 
-    // Change tab class and display content
-    $('.tabs-nav a').on('click', function(event){
+    function onChangePasswordSubmitForm(){
         event.preventDefault();
-        $('.tabs-nav li').removeClass('tab-active');
-        $(this).parent().addClass('tab-active');
-        $('.tabs-stage div').hide();
-        $($(this).attr('href')).show();
-    });
+        $('.errorMsg').hide();
+
+        /*------<Get Form Values>-----*/
+        let password = $('#password').val();
+        let newPassword = $('#new_password').val();
+        let confirmPassword = $('#confirm_password').val();
+        let error_flag = false;
+        console.log('password ', password);
+        console.log('newPassword ', newPassword);
+        console.log('confirmPassword ', confirmPassword);
+        /*---------------------<FORM VALIDATIONS START>---------------------*/
+
+        let password_regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+
+
+        if(!password_regex.test(password)){
+            $('.errorMsg .err').text('Please enter a valid password.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }
+        else if (!password_regex.test(newPassword)) {
+            console.log('gets in new password');
+            $('.errorMsg .err').text('Please enter a valid new password.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }
+        else if (newPassword !== confirmPassword || !password_regex.test(confirmPassword)) {
+            console.log('gets in confirm password');
+            $('.errorMsg .err').text('Passwords do not match.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }
+        else if (error_flag === false) {
+            console.log('submit form');
+            $("#change_password").submit();
+        }
+
+        /*---------------------<FORM VALIDATIONS END>---------------------*/
+        /*------<Submit Form>-----*/
+    }
 </script>

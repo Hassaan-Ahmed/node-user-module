@@ -3,11 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="d8874770-ad46-46ea-8725-793a3a1c722d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/images/logo-video-layout.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/profile-images/profilePicture-1542276904312.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/custom..css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/custom..css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/profile-images/profilePicture-1542282766932.gif" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/change-password.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/change-password.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/includes/registered-user-header.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/includes/registered-user-header.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/profile.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/profile.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/register.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/create-user.ejs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -96,7 +98,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="62" />
-          <entry key="ejs" value="2593" />
+          <entry key="ejs" value="2742" />
           <entry key="env" value="16" />
           <entry key="gitignore" value="7" />
           <entry key="hbs" value="33" />
@@ -108,7 +110,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="62" />
-          <entry key="EJS" value="2593" />
+          <entry key="EJS" value="2742" />
           <entry key="Handlebars/Mustache" value="33" />
           <entry key="JavaScript" value="4325" />
           <entry key="PLAIN_TEXT" value="138" />
@@ -117,12 +119,12 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="6" />
-          <entry key="ejs" value="16" />
+          <entry key="ejs" value="19" />
           <entry key="env" value="3" />
           <entry key="gitignore" value="2" />
           <entry key="hbs" value="3" />
           <entry key="html" value="4" />
-          <entry key="js" value="15" />
+          <entry key="js" value="16" />
           <entry key="json" value="2" />
           <entry key="www" value="3" />
         </counts>
@@ -130,11 +132,11 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="6" />
-          <entry key="EJS" value="16" />
+          <entry key="EJS" value="19" />
           <entry key="HTML" value="4" />
           <entry key="Handlebars/Mustache" value="3" />
           <entry key="JSON" value="2" />
-          <entry key="JavaScript" value="18" />
+          <entry key="JavaScript" value="19" />
           <entry key="PLAIN_TEXT" value="5" />
         </counts>
       </usages-collector>
@@ -150,35 +152,19 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="95" column="59" lean-forward="true" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="59" />
+            <state relative-caret-position="-322">
+              <caret line="87" column="53" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
               <folding>
-                <element signature="e#1029#1220#0" />
-                <element signature="e#1290#1669#0" />
-                <element signature="e#1713#1800#0" />
-                <element signature="e#1844#2070#0" />
-                <element signature="e#2107#2304#0" />
-                <element signature="e#2342#2538#0" />
-                <element signature="e#2606#2677#0" />
-                <element signature="e#2750#2970#0" />
-                <element signature="e#3205#5923#0" />
-                <element signature="e#4218#4324#0" />
-                <element signature="e#4424#4679#0" />
-                <element signature="e#4731#5909#0" />
-                <element signature="e#5990#6451#0" />
-                <element signature="e#6271#6447#0" />
-                <element signature="e#6512#6913#0" />
-                <element signature="e#7171#7647#0" />
-                <element signature="e#7450#9591#0" />
-                <element signature="e#9657#9735#0" />
-                <element signature="e#9802#13211#0" />
-                <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#13284#13755#0" />
-                <element signature="e#13827#17588#0" />
-                <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="e#17651#18625#0" />
-                <element signature="e#18688#19852#0" />
-                <element signature="e#19958#20947#0" />
+                <element signature="e#1033#1224#0" />
+                <element signature="e#1294#1673#0" />
+                <element signature="e#1717#1804#0" />
+                <element signature="e#1848#2074#0" />
+                <element signature="e#2111#2308#0" />
+                <element signature="e#2346#2542#0" />
+                <element signature="e#2610#2681#0" />
+                <element signature="e#2754#2974#0" />
+                <element signature="e#3035#3116#0" />
+                <element signature="e#3212#5930#0" />
               </folding>
             </state>
           </provider>
@@ -187,20 +173,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/login.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
+            <state relative-caret-position="1357">
               <caret line="59" column="85" selection-start-line="59" selection-start-column="85" selection-end-line="59" selection-end-column="85" />
-              <folding>
-                <element signature="n#script#3;n#body#0;n#html#0;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/www">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" column="54" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -208,14 +182,37 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/profile.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="619">
-              <caret line="80" column="118" selection-start-line="80" selection-start-column="118" selection-end-line="80" selection-end-column="118" />
+            <state relative-caret-position="306">
+              <caret line="155" column="15" lean-forward="true" selection-start-line="155" selection-start-column="15" selection-end-line="155" selection-end-column="15" />
               <folding>
                 <element signature="n#style#0;n#input#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#form#0;n#div#1;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
+                <element signature="e#8883#10594#0#HTML" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/change-password.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="73" column="4" lean-forward="true" selection-start-line="73" selection-start-column="4" selection-end-line="114" selection-end-column="5" />
+              <folding>
+                <element signature="n#div#0;n#div#0;n#div#0;n#main#0;n#!!top" />
+                <element signature="e#3721#5432#0#HTML" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/create-user.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="84" column="92" lean-forward="true" selection-start-line="84" selection-start-column="92" selection-end-line="84" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -223,24 +220,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/custom..css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-439" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/register.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="29" column="90" selection-start-line="29" selection-start-column="61" selection-end-line="29" selection-end-column="90" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1794">
-              <caret line="78" column="56" selection-end-line="139" />
+            <state relative-caret-position="253">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -248,7 +229,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/forgot-password.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
+            <state relative-caret-position="1219">
               <caret line="53" column="61" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="61" />
             </state>
           </provider>
@@ -257,8 +238,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/includes/registered-user-header.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="9" column="108" selection-start-line="9" selection-start-column="108" selection-end-line="9" selection-end-column="108" />
+            <state relative-caret-position="7">
+              <caret line="133" column="92" selection-start-line="133" selection-start-column="92" selection-end-line="133" selection-end-column="92" />
             </state>
           </provider>
         </entry>
@@ -266,7 +247,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/dashboard.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
+            <state relative-caret-position="207">
               <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
             </state>
           </provider>
@@ -301,6 +282,7 @@
       <find>fs</find>
       <find>id=&quot;email&quot;</find>
       <find>may_contact_us</find>
+      <find>gpa4</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -325,7 +307,6 @@
         <option value="$PROJECT_DIR$/views/register.ejs" />
         <option value="$PROJECT_DIR$/views/password.ejs" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.js" />
-        <option value="$PROJECT_DIR$/views/change-password.ejs" />
         <option value="$PROJECT_DIR$/views/forgot-password.ejs" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/app.js" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.hbs" />
@@ -334,9 +315,11 @@
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/.example.env" />
+        <option value="$PROJECT_DIR$/views/create-user.ejs" />
         <option value="$PROJECT_DIR$/routes/index.js" />
-        <option value="$PROJECT_DIR$/views/includes/registered-user-header.ejs" />
+        <option value="$PROJECT_DIR$/views/change-password.ejs" />
         <option value="$PROJECT_DIR$/public/css/custom..css" />
+        <option value="$PROJECT_DIR$/views/includes/registered-user-header.ejs" />
         <option value="$PROJECT_DIR$/views/profile.ejs" />
       </list>
     </option>
@@ -359,9 +342,9 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="861" />
-    <option name="y" value="12" />
-    <option name="width" value="979" />
+    <option name="x" value="860" />
+    <option name="y" value="11" />
+    <option name="width" value="980" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -386,7 +369,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -407,12 +389,24 @@
             <path>
               <item name="node-user-module" type="b2602c69:ProjectViewProjectNode" />
               <item name="node-user-module" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="node-user-module" type="b2602c69:ProjectViewProjectNode" />
+              <item name="node-user-module" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="node-user-module" type="b2602c69:ProjectViewProjectNode" />
+              <item name="node-user-module" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="includes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -425,15 +419,15 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Appsters\WebstormProjects\node-user-module\public\images" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Appsters\WebstormProjects\node-user-module" />
       <recent name="C:\Users\Appsters\WebstormProjects\node-user-module\public\profile-images" />
       <recent name="C:\Users\Appsters\WebstormProjects\node-user-module\views" />
       <recent name="C:\Users\Appsters\WebstormProjects\node-user-module\views\includes" />
       <recent name="C:\Users\Appsters\WebstormProjects\node-user-module\public\js" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Appsters\WebstormProjects\node-user-module\public\images" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -486,7 +480,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="98542000" />
+    <option name="totallyTimeSpent" value="103297000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -501,7 +495,7 @@
     <frame x="-7" y="-7" width="1550" height="878" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499316" visible="true" weight="0.1850628" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.499316" visible="true" weight="0.1850628" />
       <window_info id="Structure" order="1" sideWeight="0.500684" side_tool="true" weight="0.1850628" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -628,13 +622,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/includes/registered-user-footer.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/layout.ejs">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -675,13 +662,6 @@
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/layout.hbs" />
     <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.js" />
-    <entry file="file://$PROJECT_DIR$/views/change-password.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/mongoose/lib/model.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="458">
@@ -698,24 +678,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/style.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="8" column="83" lean-forward="true" selection-start-line="8" selection-start-column="83" selection-end-line="8" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.hbs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="2014" column="57" selection-start-line="2014" selection-start-column="43" selection-end-line="2014" selection-end-column="57" />
-          <folding>
-            <element signature="n#select#0;n#div#3;n#div#0;n#div#0;n#div#1;n#section#1;n#form#0;n#!!top" />
-            <element signature="n#select#0;n#div#0;n#div#1;n#div#0;n#div#1;n#section#1;n#form#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/style.min.css" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/fz3temp-2/index.hbs" />
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -753,91 +717,93 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/dashboard.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
+        <state relative-caret-position="207">
           <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="95" column="59" lean-forward="true" selection-start-line="95" selection-start-column="59" selection-end-line="95" selection-end-column="59" />
-          <folding>
-            <element signature="e#1029#1220#0" />
-            <element signature="e#1290#1669#0" />
-            <element signature="e#1713#1800#0" />
-            <element signature="e#1844#2070#0" />
-            <element signature="e#2107#2304#0" />
-            <element signature="e#2342#2538#0" />
-            <element signature="e#2606#2677#0" />
-            <element signature="e#2750#2970#0" />
-            <element signature="e#3205#5923#0" />
-            <element signature="e#4218#4324#0" />
-            <element signature="e#4424#4679#0" />
-            <element signature="e#4731#5909#0" />
-            <element signature="e#5990#6451#0" />
-            <element signature="e#6271#6447#0" />
-            <element signature="e#6512#6913#0" />
-            <element signature="e#7171#7647#0" />
-            <element signature="e#7450#9591#0" />
-            <element signature="e#9657#9735#0" />
-            <element signature="e#9802#13211#0" />
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#13284#13755#0" />
-            <element signature="e#13827#17588#0" />
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#17651#18625#0" />
-            <element signature="e#18688#19852#0" />
-            <element signature="e#19958#20947#0" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/login.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
+        <state relative-caret-position="1357">
           <caret line="59" column="85" selection-start-line="59" selection-start-column="85" selection-end-line="59" selection-end-column="85" />
-          <folding>
-            <element signature="n#script#3;n#body#0;n#html#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/forgot-password.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
+        <state relative-caret-position="1219">
           <caret line="53" column="61" selection-start-line="53" selection-start-column="61" selection-end-line="53" selection-end-column="61" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/register.ejs">
+    <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="29" column="90" selection-start-line="29" selection-start-column="61" selection-end-line="29" selection-end-column="90" />
+        <state relative-caret-position="-322">
+          <caret line="87" column="53" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
+          <folding>
+            <element signature="e#1033#1224#0" />
+            <element signature="e#1294#1673#0" />
+            <element signature="e#1717#1804#0" />
+            <element signature="e#1848#2074#0" />
+            <element signature="e#2111#2308#0" />
+            <element signature="e#2346#2542#0" />
+            <element signature="e#2610#2681#0" />
+            <element signature="e#2754#2974#0" />
+            <element signature="e#3035#3116#0" />
+            <element signature="e#3212#5930#0" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/includes/registered-user-header.ejs">
+    <entry file="file://$PROJECT_DIR$/views/create-user.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="9" column="108" selection-start-line="9" selection-start-column="108" selection-end-line="9" selection-end-column="108" />
+        <state relative-caret-position="253">
+          <caret line="84" column="92" lean-forward="true" selection-start-line="84" selection-start-column="92" selection-end-line="84" selection-end-column="92" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/custom..css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-439" />
+        <state relative-caret-position="253">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/includes/registered-user-footer.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/change-password.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="73" column="4" lean-forward="true" selection-start-line="73" selection-start-column="4" selection-end-line="114" selection-end-column="5" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#div#0;n#main#0;n#!!top" />
+            <element signature="e#3721#5432#0#HTML" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/includes/registered-user-header.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7">
+          <caret line="133" column="92" selection-start-line="133" selection-start-column="92" selection-end-line="133" selection-end-column="92" />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/profile.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="619">
-          <caret line="80" column="118" selection-start-line="80" selection-start-column="118" selection-end-line="80" selection-end-column="118" />
+        <state relative-caret-position="306">
+          <caret line="155" column="15" lean-forward="true" selection-start-line="155" selection-start-column="15" selection-end-line="155" selection-end-column="15" />
           <folding>
             <element signature="n#style#0;n#input#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#1;n#div#0;n#form#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#form#0;n#div#1;n#div#0;n#div#1;n#div#0;n#main#0;n#!!top" expanded="true" />
+            <element signature="e#8883#10594#0#HTML" />
           </folding>
         </state>
       </provider>
