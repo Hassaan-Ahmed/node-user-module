@@ -192,7 +192,7 @@
             $('.change_password').addClass("current");
         });
         $('a[href="#account_settings"]').click(() => {
-            if ($('.errorMsg .err').text( "Only images of type [jpeg, jpg, gif , png] allowed.")){
+            if ($(profile).val() !== "" && $('.errorMsg .err').text( "Only images of type [jpeg, jpg, gif , png] allowed.")){
                 $('.errorMsg').show();
             }
             $(".active").removeClass("current").addClass("current");
