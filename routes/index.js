@@ -16,7 +16,7 @@ let multer  = require('multer');
 const resetPasswordRoute = '/reset-password/';
 const forgotPasswordRouteAddress = '/forgot-password';
 const loginRouteAddress = '/login';
-const profileRouteAddress = '/create-user';
+const profileRouteAddress = '/profile';
 const changePasswordRouteAddress = '/change-password';
 const profilePictureFolder = 'profile-images/';
 const profilePictureDestination = './public/profile-images/';
@@ -123,7 +123,7 @@ router.post('/register',isAdminLoggedIn, upload.single('profilePicture') , (req,
 User.findOne({email: req.body.email})
     .then((user) => {
         req.flash('error', user.email+' already exists');
-        res.redirect(loginRouteAddress);
+        res.redirect('back');
     })
     .catch(() => {
         console.log('setting new user values');
@@ -155,7 +155,7 @@ User.findOne({email: req.body.email})
                             // });
 
                             // req.logIn(newUser, function(err) {
-                                res.redirect(profileRouteAddress);
+                                res.redirect('back');
                                 // throw Error (err);
                             // });
                         })

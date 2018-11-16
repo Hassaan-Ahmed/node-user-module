@@ -18,8 +18,8 @@
                             <form id="update_profile_picture" action="/update-profile-picture" method="post" enctype="multipart/form-data">
                                 <input style="display: none;" id="file_update_profile_picture" type="file" name="profilePicture" class="form-control">
                                 <div class="row">
-                                    <a  class="btn btn-info" style="padding: 11px ; width: 100px; background: #36eaeb; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" id="btn_update_profile_picture"><span class="icon-Pencil"> <span style="font-family:open sans;">Edit</span></span></a>
-                                    <a href="/delete-photo" style="padding: 11px; width: 100px; background: red; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" class="btn btn-danger"><span class="icon-Bucket"> <span style="font-family:open sans;">Delete</span></span></a>
+                                    <a  class="btn btn-info edit-profile-picture"><span class="icon-Pencil"> <span>Edit</span></span></a>
+                                    <a href="/delete-photo" class="btn btn-danger del-profile-picture"><span class="icon-Bucket"> <span >Delete</span></span></a>
                                 </div>
                             </form>
                         </div>
@@ -182,10 +182,19 @@
             }
         });
         $('a[href="#change_password"]').click(() => {
+            if ($('.errorMsg .err').text( "Only images of type [jpeg, jpg, gif , png] allowed.")){
+                $('.errorMsg').hide();
+            }else {
+                console.log('showing error');
+                $('.errorMsg').show();
+            }
             $(".active").removeClass("current");
             $('.change_password').addClass("current");
         });
         $('a[href="#account_settings"]').click(() => {
+            if ($('.errorMsg .err').text( "Only images of type [jpeg, jpg, gif , png] allowed.")){
+                $('.errorMsg').show();
+            }
             $(".active").removeClass("current").addClass("current");
             $('.change_password').removeClass("current");
         });

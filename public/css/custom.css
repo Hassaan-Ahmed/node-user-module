@@ -318,3 +318,37 @@ body {
 .nav-pills-custom-minimal.custom-minimal-bottom > li.active > a, .nav-pills-custom-minimal.custom-minimal-bottom > li.active > a:hover, .nav-pills-custom-minimal.custom-minimal-bottom > li.active > a:focus {
     border-bottom-color: #94c632;
 }
+.edit-profile-picture {
+    padding: 11px;
+    margin-right: 5px;
+    width: 100px;
+    background: #36eaeb;
+    border: 0;
+    border-radius: 2px;
+    font-size: 17px;
+    color: #fff !important;
+}
+.edit-profile-picture span {
+    font-family: open sans;
+}
+.del-profile-picture {
+    padding: 11px;
+    margin-left: 5px;
+    width: 100px;
+    background: red;
+    border: 0;
+    border-radius: 2px;
+    font-size: 17px;
+    color: #fff;
+}
+.del-profile-picture span {
+    font-family:open sans;
+}
+.del-profile-picture:hover{
+    background: #c82333;
+    border-color: #bd2130;
+}
+.edit-profile-picture:hover{
+    background: #138496;
+    border-color: #117a8b;
+}
