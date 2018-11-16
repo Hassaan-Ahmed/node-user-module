@@ -5,9 +5,9 @@
     <main id="col-main">
       <div class="dashboard-container">
 
-            <ul class="nav nav-tabs dashboard-sub-menu" role="tablist">
+            <ul class="nav nav-tabs dashboard-sub-menu" role="tablist" id="tabList">
                 <li role="presentation" class="active current"><a href="#account_settings" aria-controls="home" role="tab" data-toggle="tab">Account Settings</a></li>
-                <li role="presentation"><a href="#change_password" aria-controls="profile" role="tab" data-toggle="tab">Change Password</a></li>
+                <li role="presentation" class="change_password"><a href="#change_password" aria-controls="profile" role="tab" data-toggle="tab">Change Password</a></li>
             </ul><!-- close .dashboard-sub-menu -->
             <div class="tab-content container-fluid">
                 <div role="tabpanel" class="row tab-pane active" id="account_settings">
@@ -25,7 +25,6 @@
                         </div>
                     </div><!-- close .col -->
                     <div class="col-12 col-lg-9">
-
                         <form id="update_profile" class="account-settings-form" method="post" action="/update-profile">
                             <%- messages() %>
                             <div class="row">
@@ -155,15 +154,93 @@
     $(document).ready(function() {
         const profile = $('#file_update_profile_picture');
         $("#btn_update_profile_picture").click(() =>{
-            if ( profile.val() !== '')
-            {
-                $("#update_profile_picture").submit();
-            }
-            else {
                 $("input").trigger("click");
+        });
+        $(profile).change(() => {
+            $("div#messages").hide();
+            let file = $(profile).val();
+            let extentions = ['jpg', 'jpeg', 'gif', 'png'];
+            let count = 0;
+            // first check if file field has any value
+            if ( file ) {
+                // split file name at dot
+                let get_ext = file.split('.');
+                // reverse name to check extension
+                get_ext = get_ext.reverse();
+                // check file type is valid as given in 'extentions' array
+                if ( $.inArray ( get_ext[0].toLowerCase(), extentions ) > -1 ){
+                    count++;
+                    console.log('success '+ count);
+                    $('.errorMsg').hide();
+                    $("#update_profile_picture").submit();
+                } else {
+                    count++;
+                    console.log('failed '+ count);
+                    $('.errorMsg .err').text('Only images of type [jpeg, jpg, gif , png] allowed.');
+                    $('.errorMsg').show();
+                }
             }
         });
-    });
+        $('a[href="#change_password"]').click(() => {
+            $(".active").removeClass("current");
+            $('.change_password').addClass("current");
+        });
+        $('a[href="#account_settings"]').click(() => {
+            $(".active").removeClass("current").addClass("current");
+            $('.change_password').removeClass("current");
+        });
+
+        // (function($) {
+        //     $.fn.checkFileType = function(options) {
+        //         let defaults = {
+        //             allowedExtensions: [],
+        //             success: function() {},
+        //             error: function() {}
+        //         };
+        //         options = $.extend(defaults, options);
+        //
+        //         return this.each(function() {
+        //
+        //             $(this).on('change', function() {
+        //                 let value = $(this).val(),
+        //                     file = value.toLowerCase(),
+        //                     extension = file.substring(file.lastIndexOf('.') + 1);
+        //
+        //                 if ($.inArray(extension, options.allowedExtensions) === -1) {
+        //                     options.error();
+        //                     $(this).focus();
+        //                 } else {
+        //                     options.success();
+        //
+        //                 }
+        //
+        //             });
+        //
+        //         });
+        //     };
+        //
+        // })(jQuery);
+        //
+        // $(function() {
+        //     let count = 0;
+        //     $('#update_profile_picture').checkFileType({
+        //         allowedExtensions: ['jpg', 'jpeg', 'gif', 'png'],
+        //         success: function() {
+        //             count++;
+        //             console.log('success '+ count);
+        //             $('.errorMsg').hide();
+        //             $("#update_profile_picture").submit();
+        //         },
+        //         error: function() {
+        //             count++;
+        //             console.log('failed '+ count);
+        //             $('.errorMsg .err').text('Only images of type [jpeg, jpg, gif , png] allowed.');
+        //             $('.errorMsg').show();
+        //         }
+        //     });
+        //
+        });
+
 
     function onChangePasswordSubmitForm(){
         event.preventDefault();

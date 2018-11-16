@@ -211,24 +211,6 @@ router.get('/logout',isLoggedIn, (req,res,next) => {
     req.flash('success', 'You are logged out');
     res.redirect(loginRouteAddress);
 });
-// change password Form
-router.get('/change-password',isLoggedIn,  (req,res,next) => {
-    const user = req.user;
-    const firstName = user.firstName;
-    const lastName = user.lastName;
-    const email = user.email;
-    const profilePicture = user.profilePicture;
-    let role = user.role;
-    role = role === 'Admin' ? role : '';
-    res.render('change-password', {
-        title:'Admin change password form',
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        profilePicture: profilePicture,
-        role: role
-    });
-});
 router.post('/change-password', isLoggedIn, (req,res,next) => {
     console.log('new password ',req.body.new_password);
     console.log('password ',req.body.password);

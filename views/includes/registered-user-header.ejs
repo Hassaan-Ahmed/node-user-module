@@ -135,10 +135,9 @@
                 <div id="header-username"><%=firstName +' '+ lastName%></div><i class="fas fa-angle-down"></i>
             </div><!-- close #header-user-profile-click -->
             <div id="header-user-profile-menu">
-                <ul>
+                <ul class="nav nav-tabs" role="tablist">
                     <li><a href="/profile"><span class="icon-User"></span>Edit Profile</a></li>
-                    <!--<li><a href="#"><span class="icon-Favorite-Window"></span>My Favorites</a></li>-->
-                    <li><a href="/change-password"><span class="icon-Gears"></span>Change Password</a></li>
+                    <li role="presentation" ><a href="#change_password" aria-controls="profile" role="tab" data-toggle="tab"><span class="icon-Gears"></span>Change Password</a></li>
                     <li><a href="/logout"><span class="icon-Power-3"></span>Log Out</a></li>
                 </ul>
             </div><!-- close #header-user-profile-menu -->
