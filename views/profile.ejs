@@ -11,19 +11,20 @@
             </ul><!-- close .dashboard-sub-menu -->
             <div class="tab-content container-fluid">
                 <div role="tabpanel" class="row tab-pane active" id="account_settings">
+                <div class="row">
                     <div class="col-12  col-lg-3">
                         <div id="account-edit-photo">
                             <div><img src="<%= profilePicture !== '' ? profilePicture : 'images/user-icon.png' %>" alt="Account Image"></div>
                             <form id="update_profile_picture" action="/update-profile-picture" method="post" enctype="multipart/form-data">
                                 <input style="display: none;" id="file_update_profile_picture" type="file" name="profilePicture" class="form-control">
                                 <div class="row">
-                                    <a  class="btn btn-info" style="padding: 11px ; width: 92px; background: #36eaeb; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" id="btn_update_profile_picture"><span class="icon-Edit">Edit</span></a>
-                                    <a href="/delete-photo" style="padding: 11px; width: 92px; background: red; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" class="btn btn-danger"><span class="icon-Bucket">Delete</span></a>
+                                    <a  class="btn btn-info" style="padding: 11px ; width: 100px; background: #36eaeb; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" id="btn_update_profile_picture"><span class="icon-Pencil"> <span style="font-family:open sans;">Edit</span></span></a>
+                                    <a href="/delete-photo" style="padding: 11px; width: 100px; background: red; border: 0; border-radius: 2px; font-size: 17px; color: #fff;" class="btn btn-danger"><span class="icon-Bucket"> <span style="font-family:open sans;">Delete</span></span></a>
                                 </div>
                             </form>
                         </div>
                     </div><!-- close .col -->
-                    <div class="col">
+                    <div class="col-12 col-lg-9">
 
                         <form id="update_profile" class="account-settings-form" method="post" action="/update-profile">
                             <%- messages() %>
@@ -63,6 +64,7 @@
                         </form>
 
                     </div><!-- close .col -->
+                </div>
 
                 </div><!-- close .row -->
                 <div role="tabpanel" class="row tab-pane" id="change_password">
