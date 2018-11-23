@@ -13,6 +13,7 @@ const clientEmailAddress = 'hassaan@appstersinc.com';
 let async = require("async");
 let crypto = require('crypto-browserify');
 let multer  = require('multer');
+const { google } = require('googleapis');
 const resetPasswordRoute = '/reset-password/';
 const forgotPasswordRouteAddress = '/forgot-password';
 const loginRouteAddress = '/login';
@@ -78,6 +79,32 @@ function isLoggedOut(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('back');
 }
+router.get('/data', (req, res, next) => {
+    const key = require('../config/auth.json');
+    const scopes = 'https://www.googleapis.com/auth/analytics.readonly';
+    console.log('client email: ',key.client_email);
+    const jwt = new google.auth.JWT(key.client_email, null, key.private_key, scopes);
+    const view_id = 185454292;
+
+    process.env.GOOGLE_APPLICATION_CREDENTIALS = '../config/auth.json';
+
+    jwt.authorize((err, response) => {
+        google.analytics('v3').data.ga.get(
+            {
+                auth: jwt,
+                ids: 'ga:' + view_id,
+                'start-date': '30daysAgo',
+                'end-date': 'today',
+                metrics: 'ga:pageviews'
+            },
+            (err, result) => {
+                console.log(err, result.data.profileInfo.profileName);
+            }
+        );
+        // console.log('this is response: ',response);
+        return response;
+    });
+});
 // Login Form
 router.get('/login' ,isLoggedOut,  (req,res,next) => {
     res.render('login', {
