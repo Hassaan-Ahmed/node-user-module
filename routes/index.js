@@ -102,7 +102,7 @@ router.get('/data', (req, res, next) => {
             }
         );
         // console.log('this is response: ',response);
-        return response;
+        res.send(response);
     });
 });
 // Login Form
