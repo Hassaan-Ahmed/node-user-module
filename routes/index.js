@@ -64,16 +64,19 @@ function isAdminLoggedIn(req, res, next) {
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+    if (req.isAuthenticated() && req.user.isDeleted === false)
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/login');
+    else {
+        req.flash('error','Your account might have be removed. Contact your service provider.');
+        res.redirect('/login');
+    }
 }
 function isLoggedOut(req, res, next) {
 
     // if user is authenticated in the session, carry on
-    if (!req.isAuthenticated())
+    if (!req.isAuthenticated() || req.user.isDeleted === true)
         return next();
 
     // if they aren't redirect them to the home page
@@ -169,8 +172,61 @@ router.post('/login', isLoggedOut, (req,res,next) => {
         failureFlash: true
     })(req, res, next);
 });
-router.get('/all',( req,res, next) => {
-   // User.find
+router.get('/allUser', (req, res) => {
+    let  {firstName, lastName, role ,profilePicture} = req.user;
+    let user = User.find({role:''})
+        .then((user) => {
+            res.render('userList',{
+                title: 'All Users',
+                profilePicture : profilePicture,
+                firstName : firstName,
+                lastName : lastName,
+                role : role,
+                user: user
+            });
+        })
+        .catch((e) => {
+            console.log('Error: ', e);
+        });
+    console.log(user);
+
+});
+router.get('/:id', (req,res,next) => {
+    let userId = req.params.id;
+   User.findOne({_id:userId})
+       .then((user) => {
+           const firstName = user.firstName;
+           const lastName = user.lastName;
+           const email = user.email;
+           const profilePicture = user.profilePicture;
+           let role = user.role;
+           let roleType = role === 'Admin' ? role : '';
+           res.render('profile',{
+               firstName: firstName,
+               lastName: lastName,
+               email: email,
+               profilePicture: profilePicture,
+               role: roleType,
+               title: 'Profile'
+           });
+       });
+});
+router.get('/delete/:id',(req,res,next) => {
+    let userId = req.params.id;
+    User.findOne({_id:userId})
+        .then((user) => {
+            user.isDeleted = true;
+            user.save(function (error) {
+                if(error){
+                    console.log('Could not delete the user ',error);
+                }
+                else {
+                    console.log('saving deleted user.');
+                    req.flash('success', 'user successfully deleted.');
+                    res.redirect('back');
+                }
+            });
+        });
 });
 router.get('/create-user', isAdminLoggedIn, (req, res) => {
     res.render('create-user', {
@@ -211,6 +267,7 @@ User.findOne({email: req.body.email})
             lastName: lastName,
             email: email,
             password: password,
+            role:'',
             profilePicture: profilePicture,
             contactNumber: contactNumber,
             createdAt: Date.now()

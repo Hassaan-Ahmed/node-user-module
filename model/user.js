@@ -8,12 +8,13 @@ const UserSchema = new Schema({
    password: {type: String, required: true },
    profilePicture: {type: String, required: false },
    contactNumber: {type: Number , required: false },
-   analytics_id: {type: Number , required: false },
+   analyticsId: {type: Number , required: false },
    designation: {type: String, required: false },
    status: {type: Boolean, required: false },
    role: {type: String, required: false }, //Admin || User
    createdAt: {type: Date , required: false },
    updatedAt: {type: Date , required: false },
+   isDeleted: { type: Boolean, default: false },
    resetPasswordToken: String,
    resetPasswordExpires: Date
 });

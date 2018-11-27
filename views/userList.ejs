@@ -1,0 +1,67 @@
+<%- include('includes/registered-user-header'); -%>
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="/create-user" class="btn-success btn-sm add-new-user-btn"><span>+</span> Add New</a>
+                <%- messages() %>
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                            <tr>
+                                <th><span>User</span></th>
+                                <th><span>Created</span></th>
+                                <th class="text-center"><span>Status</span></th>
+                                <th><span>Email</span></th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% user.forEach((user) => {%>
+                                <tr>
+                                <td>
+                                    <img src="<%= user.profilePicture !== '' ? user.profilePicture : 'images/user-icon.png' %>" alt="">
+                                    <a href="/<%- user._id %>" class="user-link"><%- user.firstName +' '+ user.lastName %></a>
+                                    <span class="user-subhead"><%= user.role === '' ? "Subscribed User" : 'Admin' %></span>
+                                </td>
+                                <td><%- user.createdAt %></td>
+                                <td class="text-center">
+                                    <span class="label label-default"><%- user.isDeleted === false ? 'Active' : 'Suspended' %></span>
+                                </td>
+                                <td>
+                                    <a href="/<%- user._id %>"><%- user.email %></a>
+                                </td>
+                                <td style="width: 20%;">
+                                    <a href="#" class="table-link">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                    </a>
+                                    <a href="#" class="table-link">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                    </a>
+                                    <a href="/delete/<%- user._id %>" class="table-link danger">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% });%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div><!-- close #sidebar-bg-->
+
+<%- include('includes/registered-user-footer'); -%>
