@@ -85,24 +85,73 @@ router.get('/data', (req, res, next) => {
     console.log('client email: ',key.client_email);
     const jwt = new google.auth.JWT(key.client_email, null, key.private_key, scopes);
     const view_id = 185454292;
+    let numberOfSessions, browserName  = [],
+        numberOfUsesOfBrowser = [];
+    const user = req.user;
+    const firstName = user.firstName;
+    const lastName = user.lastName;
+    const profilePicture = user.profilePicture;
+    let role = user.role;
+    role = role === 'Admin' ? role : '';
 
     process.env.GOOGLE_APPLICATION_CREDENTIALS = '../config/auth.json';
 
     jwt.authorize((err, response) => {
-        google.analytics('v3').data.ga.get(
-            {
-                auth: jwt,
-                ids: 'ga:' + view_id,
-                'start-date': '30daysAgo',
-                'end-date': 'today',
-                metrics: 'ga:pageviews'
-            },
-            (err, result) => {
-                console.log(err, result.data.profileInfo.profileName);
-            }
-        );
+        function getBrowserAndSession () {
+            google.analytics('v3').data.ga.get(
+                {
+                    auth: jwt,
+                    ids: 'ga:' + view_id,
+                    'start-date': '30daysAgo',
+                    'end-date': 'today',
+                    // metrics: 'ga:pageviews' 107.22.123.110:35788
+                    // 'start-date': 'today',
+                    // 'end-date': 'today',
+                    'dimensions': 'ga:browser',
+                    metrics: 'ga:sessions'
+                },
+                (err, result) => {
+                    console.log('result ',result);
+                    let browsers = result.data.rows;
+                    let i = 0;
+                    browsers.forEach((browser) => {
+                        browserName[i] = browser[0];
+                        numberOfUsesOfBrowser[i] = browser[1];
+                        console.info('this is browser name ', browserName);
+                        console.info('this is browser number ', numberOfUsesOfBrowser);
+                        i++;
+                    });
+                    let numValue = result.data.totalsForAllResults;
+                    numberOfSessions = parseInt(Object.values(numValue),10);
+                    console.log(err, numberOfSessions);
+                }
+            );
+        }
+        getBrowserAndSession();
+        var resolveAfter2Seconds = function() {
+            console.log("starting slow promise");
+            return new Promise(resolve => {
+                setTimeout(function() {
+                    resolve();
+                    console.log("slow promise is done");
+                    console.log('browser value after function ', browserName);
+                }, 200);
+            });
+        };
+        resolveAfter2Seconds();
+        // function get
         // console.log('this is response: ',response);
-        res.send(response);
+        // res.send(response);
+        res.render('dashboard',{
+            browserName: browserName,
+            numberOfSessions: numberOfSessions,
+            numberOfUsesOfBrowser: numberOfUsesOfBrowser,
+            title: 'Dashboard',
+            firstName: firstName,
+            lastName: lastName,
+            profilePicture: profilePicture,
+            role: role
+        })
     });
 });
 // Login Form
@@ -119,6 +168,9 @@ router.post('/login', isLoggedOut, (req,res,next) => {
         failureRedirect: loginRouteAddress,
         failureFlash: true
     })(req, res, next);
+});
+router.get('/all',( req,res, next) => {
+   // User.find
 });
 router.get('/create-user', isAdminLoggedIn, (req, res) => {
     res.render('create-user', {

@@ -8,13 +8,14 @@ const UserSchema = new Schema({
    password: {type: String, required: true },
    profilePicture: {type: String, required: false },
    contactNumber: {type: Number , required: false },
+   analytics_id: {type: Number , required: false },
    designation: {type: String, required: false },
    status: {type: Boolean, required: false },
-   role: {type: String, required: false },
+   role: {type: String, required: false }, //Admin || User
    createdAt: {type: Date , required: false },
    updatedAt: {type: Date , required: false },
-    resetPasswordToken: String,
-    resetPasswordExpires: Date
+   resetPasswordToken: String,
+   resetPasswordExpires: Date
 });
 const User = mongoose.model('user',UserSchema);
 module.exports = User;
