@@ -13,6 +13,7 @@ const clientEmailAddress = 'hassaan@appstersinc.com';
 let async = require("async");
 let crypto = require('crypto-browserify');
 let multer  = require('multer');
+const mongoose = require('mongoose');
 const { google } = require('googleapis');
 const resetPasswordRoute = '/reset-password/';
 const forgotPasswordRouteAddress = '/forgot-password';
@@ -82,25 +83,19 @@ function isLoggedOut(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('back');
 }
-router.get('/data', (req, res, next) => {
+// dashboard
+router.get('/',isLoggedIn, (req,res,next) => {
     const key = require('../config/auth.json');
     const scopes = 'https://www.googleapis.com/auth/analytics.readonly';
-    console.log('client email: ',key.client_email);
+    console.log('client email: ', key.client_email);
     const jwt = new google.auth.JWT(key.client_email, null, key.private_key, scopes);
     const view_id = 185454292;
-    let numberOfSessions, browserName  = [],
+    let numberOfSessions, browserName = [],
         numberOfUsesOfBrowser = [];
-    const user = req.user;
-    const firstName = user.firstName;
-    const lastName = user.lastName;
-    const profilePicture = user.profilePicture;
-    let role = user.role;
-    role = role === 'Admin' ? role : '';
-
     process.env.GOOGLE_APPLICATION_CREDENTIALS = '../config/auth.json';
 
     jwt.authorize((err, response) => {
-        function getBrowserAndSession () {
+        function getBrowserAndSession() {
             google.analytics('v3').data.ga.get(
                 {
                     auth: jwt,
@@ -114,7 +109,7 @@ router.get('/data', (req, res, next) => {
                     metrics: 'ga:sessions'
                 },
                 (err, result) => {
-                    console.log('result ',result);
+                    console.log('result ', result);
                     let browsers = result.data.rows;
                     let i = 0;
                     browsers.forEach((browser) => {
@@ -125,16 +120,17 @@ router.get('/data', (req, res, next) => {
                         i++;
                     });
                     let numValue = result.data.totalsForAllResults;
-                    numberOfSessions = parseInt(Object.values(numValue),10);
+                    numberOfSessions = parseInt(Object.values(numValue), 10);
                     console.log(err, numberOfSessions);
                 }
             );
         }
+
         getBrowserAndSession();
-        var resolveAfter2Seconds = function() {
+        var resolveAfter2Seconds = function () {
             console.log("starting slow promise");
             return new Promise(resolve => {
-                setTimeout(function() {
+                setTimeout(function () {
                     resolve();
                     console.log("slow promise is done");
                     console.log('browser value after function ', browserName);
@@ -142,10 +138,13 @@ router.get('/data', (req, res, next) => {
             });
         };
         resolveAfter2Seconds();
-        // function get
-        // console.log('this is response: ',response);
-        // res.send(response);
-        res.render('dashboard',{
+        const user = req.user;
+        const firstName = user.firstName;
+        const lastName = user.lastName;
+        const profilePicture = user.profilePicture;
+        let role = user.role;
+        role = role === 'Admin' ? role : '';
+        res.render('dashboard', {
             browserName: browserName,
             numberOfSessions: numberOfSessions,
             numberOfUsesOfBrowser: numberOfUsesOfBrowser,
@@ -154,7 +153,7 @@ router.get('/data', (req, res, next) => {
             lastName: lastName,
             profilePicture: profilePicture,
             role: role
-        })
+        });
     });
 });
 // Login Form
@@ -191,43 +190,7 @@ router.get('/allUser', (req, res) => {
     console.log(user);
 
 });
-router.get('/:id', (req,res,next) => {
-    let userId = req.params.id;
-   User.findOne({_id:userId})
-       .then((user) => {
-           const firstName = user.firstName;
-           const lastName = user.lastName;
-           const email = user.email;
-           const profilePicture = user.profilePicture;
-           let role = user.role;
-           let roleType = role === 'Admin' ? role : '';
-           res.render('profile',{
-               firstName: firstName,
-               lastName: lastName,
-               email: email,
-               profilePicture: profilePicture,
-               role: roleType,
-               title: 'Profile'
-           });
-       });
-});
-router.get('/delete/:id',(req,res,next) => {
-    let userId = req.params.id;
-    User.findOne({_id:userId})
-        .then((user) => {
-            user.isDeleted = true;
-            user.save(function (error) {
-                if(error){
-                    console.log('Could not delete the user ',error);
-                }
-                else {
-                    console.log('saving deleted user.');
-                    req.flash('success', 'user successfully deleted.');
-                    res.redirect('back');
-                }
-            });
-        });
-});
+
 router.get('/create-user', isAdminLoggedIn, (req, res) => {
     res.render('create-user', {
         title:'Admin registration form',
@@ -239,15 +202,24 @@ router.post('/register',isAdminLoggedIn, upload.single('profilePicture') , (req,
     const lastName = body.lastName;
     const email = body.email;
     const password = body.password;
+    const isECommerce = body.isECommerce;
+    const platformId = body.platformId;
+    const analyticsId = body.analyticsId;
+    const memberSince = body.memberSince;
+    const status = body.status;
     const profilePicture = profilePictureFolder+req.file.filename;
     const contactNumber = body.contactNumber;
-    req.checkBody('firstName', 'First Name is required').notEmpty();
-    req.checkBody('lastName', 'Last Name is required').notEmpty();
-    req.checkBody('email', 'Email is required').notEmpty();
-    req.checkBody('email', 'Email is not valid').isEmail();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('password2', 'Passwords do not match').equals(password);
-    req.checkBody('contactNumber', 'Please enter a correct contact number').isNumeric();
+    req.checkBody('firstName', 'First Name is required.').notEmpty();
+    req.checkBody('lastName', 'Last Name is required.').notEmpty();
+    req.checkBody('isECommerce', 'E Commerce is required.').notEmpty();
+    req.checkBody('email', 'Email is required.').notEmpty();
+    req.checkBody('email', 'Email is not valid.').isEmail();
+    req.checkBody('password', 'Password is required.').notEmpty();
+    req.checkBody('password2', 'Passwords do not match.').equals(password);
+    req.checkBody('contactNumber', 'Please enter a correct contact number.').isNumeric();
+    req.checkBody('analyticsId', 'Please enter a correct analytics id.').isNumeric();
+    req.checkBody('status', 'Please enter a correct status.').isNumeric();
+    req.checkBody('memberSince', 'Please enter a member since.').notEmpty();
     console.log('validated data');
     let errors = req.validationErrors();
     // if (errors) {
@@ -268,8 +240,13 @@ User.findOne({email: req.body.email})
             email: email,
             password: password,
             role:'',
+            analyticsId:analyticsId,
+            platformId:platformId,
+            isECommerce:isECommerce,
             profilePicture: profilePicture,
             contactNumber: contactNumber,
+            memberSince:memberSince,
+            status:status,
             createdAt: Date.now()
         });
 
@@ -284,7 +261,7 @@ User.findOne({email: req.body.email})
                     newUser.save()
                         .then(() => {
                             console.log('saving new user');
-                            req.flash('success', 'your are successfully registered');
+                            req.flash('success', 'you\'ve successfully registered a user.');
                             // res.header({
                             //     title:'Admin change password form',
                             //     errors: errors
@@ -325,22 +302,7 @@ router.get('/profile',isLoggedIn, (req,res,next) => {
         title: 'Profile'
     });
 });
-// dashboard
-router.get('/',isLoggedIn, (req,res,next) => {
-    const user = req.user;
-    const firstName = user.firstName;
-    const lastName = user.lastName;
-    const profilePicture = user.profilePicture;
-    let role = user.role;
-    role = role === 'Admin' ? role : '';
-    res.render('dashboard',{
-        title: 'Dashboard',
-        firstName: firstName,
-        lastName: lastName,
-        profilePicture: profilePicture,
-        role: role
-    });
-});
+
 // logout
 router.get('/logout',isLoggedIn, (req,res,next) => {
     req.logout();
@@ -667,6 +629,52 @@ router.post('/update-profile-picture',isLoggedIn, upload.single('profilePicture'
         })
         .catch((err) =>{
             console.log('Could not update the profile picture ', err);
+        });
+});
+router.get('/:id', (req,res,next) => {
+    let userId = mongoose.Types.ObjectId(req.params.id);
+    let roleType = req.user.role;
+    User.findOne({_id:userId})
+        .then((user) => {
+            const firstName = user.firstName;
+            const lastName = user.lastName;
+            const email = user.email;
+            const profilePicture = user.profilePicture;
+
+            res.render('profile',{
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                profilePicture: profilePicture,
+                role: roleType,
+                title: 'Profile'
+            });
+        })
+        .catch((error) => {
+            console.log('Something went wrong while getting user\'s profile: ',error);
+        });
+});
+router.get('/delete/:id',(req,res,next) => {
+    let userId = mongoose.Types.ObjectId(req.params.id);
+    User.findOne({_id:userId})
+        .then((user) => {
+            user.isDeleted = true;
+            user.status = 2; // 2 is for the status of deleted user
+            user.save(function (error) {
+                if(error){
+                    console.log('Could not delete the user ',error);
+                }
+                else {
+                    console.log('saving deleted user.');
+                    req.flash('success', 'user successfully deleted.');
+                    res.redirect('back');
+                }
+            });
+        })
+        .catch((error) => {
+            console.log('Something went wrong while deleting the user: ',error);
+            req.flash('error', 'Something went wrong, user can not be deleted deleted.');
+            res.redirect('back');
         });
 });
 module.exports = router;

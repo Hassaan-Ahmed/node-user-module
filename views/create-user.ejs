@@ -33,13 +33,33 @@
                         <div class="col-md-6">
                             <div class="form-label-group">
                                 <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First name" required="required" autofocus="autofocus">
-                                <label for="firstName">First name</label>
+                                <label for="firstName">Client Name</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-label-group">
-                                <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last name" required="required">
-                                <label for="lastName">Last name</label>
+                                <input type="text" id="analyticsId" name="analyticsId" class="form-control" placeholder="123456789" required="required" autofocus="autofocus">
+                                <label for="analyticsId">Analytics Id</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <input type="date" id="memberSince" name="memberSince" class="form-control" placeholder="01/01/2013" required="required" autofocus="autofocus">
+                                <label for="memberSince">Member Since</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <select name="status" id="status" class="form-control" required="required">
+                                    <option value=""></option>
+                                    <option value="0">In Active</option>
+                                    <option value="1">Active</option>
+                                </select>
+                                <!--<label for="status">Status</label>-->
                             </div>
                         </div>
                     </div>
@@ -54,8 +74,8 @@
                     <div class="form-row">
                     <div class="col-md-6">
                         <div class="form-label-group">
-                            <input type="file" id="profilePicture" name="profilePicture" class="form-control"required="required" autofocus="autofocus">
-                            <label for="profilePicture">Profile Picture</label>
+                            <input type="file" id="profilePicture" name="profilePicture" class="form-control" required="required" autofocus="autofocus">
+                            <label for="profilePicture">Client Picture</label>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -82,6 +102,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <select name="isECommerce" id="isECommerce" class="form-control" required="required">
+                                    <option value=""></option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                                <!--<label for="isECommerce">isECommerce</label>-->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-label-group">
+                                <select name="platformId" id="platformId" class="form-control" required="required">
+                                    <option value=""></option>
+                                    <option value="1">Magento 1.x</option>
+                                    <option value="2">Magento 2.x</option>
+                                    <option value="3">Wordpress</option>
+                                    <option value="4">Shopify</option>
+                                </select>
+                            <!--<label for="platformId">Platform Type</label>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div style="display: none" class="errorMsg alert alert-danger" role="alert">
                     <span class="fa fa-warning" aria-hidden="true"></span>
                     <span class="err" > </span>
@@ -103,13 +150,31 @@
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 <script>
+    $('#platformId').hide();
+    const isECommerce = $('#isECommerce');
+    $(isECommerce).change(() => {
+       let isECommerceValue = isECommerce.val();
+       if (isECommerceValue === '0' || isECommerceValue === ''){
+           console.log('gets in condition check');
+           $('#platformId').hide();
+       }
+       else {
+           console.log('does not gets in condition check');
+           $('#platformId').show();
+       }
+
+    });
     function onSubmitForm(){
         event.preventDefault();
         $('.errorMsg').hide();
 
         /*------<Get Form Values>-----*/
         let firstName = $('#gpa4 input[name=firstName]').val();
-        let lastName = $('#gpa4 input[name=lastName]').val();
+        let analyticsId = $('#gpa4 input[name=analyticsId]').val();
+        let memberSince = $('#gpa4 input[name=memberSince]').val();
+        let platformId = $("#platformId option:selected").text();
+        let isECommerce = $("#isECommerce option:selected").text();
+        let status = $("#status option:selected").text();
         let email = $('#gpa4 input[name=email]').val();
         let password = $('#gpa4 input[name=password]').val();
         let password2 = $('#gpa4 input[name=password2]').val();
@@ -120,18 +185,31 @@
 
         let password_regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
         let phone_regex = /^(\+[1-9][0-9]*(\([0-9]*\)|-[0-9]*-))?[0]?[1-9][0-9\- ]*$/;
-        let picture_regex = /\.(gif|jpe?g|png)$/;
+        let picture_regex = /\.(gif|jpe?g|png|PNG)$/;
+        let numaric_regex = /^\d+$/;
         let email_regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
         if (firstName === "") {
-            $('.errorMsg .err').text('Please enter your valid first name');
+            $('.errorMsg .err').text('Please enter your client name.');
             $('.errorMsg').show();
             error_flag = true;
-        } else if (lastName === "") {
-            $('.errorMsg .err').text('Please enter your valid last name');
+        } else if (!numaric_regex.test(analyticsId)) {
+            $('.errorMsg .err').text('Please enter a valid client\'s analytics id.');
             $('.errorMsg').show();
             error_flag = true;
-        } else if (!email_regex.test(email)) {
+        } else if (analyticsId.length < 9) {
+            $('.errorMsg .err').text('Your analytics id should have a length of 9 characters.');
+            $('.errorMsg').show();
+            error_flag = true;
+        } else if (memberSince === "") {
+            $('.errorMsg .err').text('Please enter the date when client became your member.');
+            $('.errorMsg').show();
+            error_flag = true;
+        } else if (status === "") {
+            $('.errorMsg .err').text('Please select status of the user.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }  else if (!email_regex.test(email)) {
             $('.errorMsg .err').text('Please enter a valid email address.');
             $('.errorMsg').show();
             error_flag = true;
@@ -149,6 +227,14 @@
             error_flag = true;
         } else if (!password_regex.test(password2)) {
             $('.errorMsg .err').text('Please enter a valid matching password.');
+            $('.errorMsg').show();
+            error_flag = true;
+        }else if (isECommerce === '') {
+            $('.errorMsg .err').text('Please select the type of platform.');
+            $('.errorMsg').show();
+            error_flag = true;
+        } else if ( $('#platformId').is(':visible') && $(platformId === "")) {
+            $('.errorMsg .err').text('Please select a platform.');
             $('.errorMsg').show();
             error_flag = true;
         }
